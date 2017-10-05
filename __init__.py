@@ -144,10 +144,8 @@ def register():
     register_class(ds_scene)
 
     from . import space_info 
-    from . import space_view3d 
 
     register_class(space_info.INFO_HT_header)
-    register_class(space_view3d.VIEW3D_HT_header)
 
     from . import ds_obj
     from . import ds_fbx
@@ -191,10 +189,8 @@ def unregister():
     ds_3d_view.unregister()
 
     from . import space_info 
-    from . import space_view3d 
 
     unregister_class(space_info.INFO_HT_header)
-    unregister_class(space_view3d.VIEW3D_HT_header)
 
 if __name__ == "__main__":
 

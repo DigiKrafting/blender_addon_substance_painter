@@ -4,15 +4,17 @@ Provides tools for a Blender + ZBrushCore + Substance Painter + iClone 3D pipeli
 
 # Features
 
+- Customised Info toolbar
+
 - One click OBJ Import (Excluding manual file/path selection)
 - One click OBJ Export (Exports selected object to export folder)
 
 - One click FBX Import (Excluding manual file/path selection)
 - One click FBX Export (Exports scene to export folder)
 
-- One click iClone Base FBX Template Import (Copies "Base.fbxkey" to export folder and renames it to the "blender filename.fbxkey")
-- One click iClone Female FBX Template Import (Copies "Base Female.fbxkey" to export folder and renames it to the "blender filename.fbxkey")
-- One click iClone Male FBX Template Import (Copies "Base Male.fbxkey" to export folder and renames it to the "blender filename.fbxkey")
+- One click iClone Base FBX Template Import (Copies "Base.fbxkey" to export folder and renames it to the Blender "filename.fbxkey")
+- One click iClone Female FBX Template Import (Copies "Base Female.fbxkey" to export folder and renames it to the Blender "filename.fbxkey")
+- One click iClone Male FBX Template Import (Copies "Base Male.fbxkey" to export folder and renames it to the Blender "filename.fbxkey")
 
 - One click ZBrushCore OBJ Export (Exports selected object to export folder and opens file in ZBrushCore)
 - One click ZBrushCore OBJ Import (Imports exported obj and replaces vertices co-ordinates on selected object)
@@ -21,9 +23,6 @@ Provides tools for a Blender + ZBrushCore + Substance Painter + iClone 3D pipeli
 - Application Link to Open iClone Character Creator (Exports scene to export folder before opening Character Creator for manual import)
 - One click iClone 3DXchange FBX Export (Exports scene to export folder and opens file in 3DXchange)
 - Application Link to Open iClone (Exports scene to export folder before opening iClone for manual import)
-
-- Customised Info toolbar
-- Customised 3D View toolbar (* WIP: Likely to be changed/tweaked)
 
 # Required Blender Version
 
