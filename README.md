@@ -22,13 +22,14 @@ Provides tools for a Blender + ZBrushCore + Substance Painter + iClone 3D pipeli
 - One click iClone 3DXchange FBX Export (Exports scene to export folder and opens file in 3DXchange)
 - Application Link to Open iClone
 
+- Customised Info toolbar
 - Customised 3D View toolbar (* WIP: Likely to be changed/tweaked)
 
 # Required Blender Version
 
 2.79 
 
-\* May work in previous versions but untested, space_info.py and space_view3d.py will likely cause unexpected behaviour.
+\* May work in previous versions but untested, space_info.py and space_view3d.py will likely cause issues/unexpected behaviour.
 
 # IMPORTANT USAGE NOTES 
 
@@ -36,11 +37,11 @@ Provides tools for a Blender + ZBrushCore + Substance Painter + iClone 3D pipeli
 
 - File Naming Convention
 
-File names are derived from the selected object name or your blender file name.
+    File names are derived from the selected object name or your blender file name.
 
 - ZBrushCore
 
-When exporting from ZBrushCore be sure to export to the same obj file that was used for import.
+    When exporting from ZBrushCore be sure to export to the same obj file that was used for import.
 
 # Installation
 
