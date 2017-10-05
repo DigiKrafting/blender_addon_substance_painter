@@ -17,10 +17,10 @@ Provides tools for a Blender + ZBrushCore + Substance Painter + iClone 3D pipeli
 - One click ZBrushCore OBJ Export (Exports selected object to export folder and opens file in ZBrushCore)
 - One click ZBrushCore OBJ Import (Imports exported obj and replaces vertices co-ordinates on selected object)
 
-- Application Link to Open Substance Painter 
-- Application Link to Open iClone Character Creator
+- Application Link to Open Substance Painter (Exports scene to export folder before opening Substance Painter)
+- Application Link to Open iClone Character Creator (Exports scene to export folder before opening Character Creator for manual import)
 - One click iClone 3DXchange FBX Export (Exports scene to export folder and opens file in 3DXchange)
-- Application Link to Open iClone
+- Application Link to Open iClone (Exports scene to export folder before opening iClone for manual import)
 
 - Customised Info toolbar
 - Customised 3D View toolbar (* WIP: Likely to be changed/tweaked)
