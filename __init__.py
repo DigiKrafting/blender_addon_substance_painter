@@ -153,7 +153,6 @@ def register():
     ds_obj.register()
     ds_fbx.register()
 
-    from . import ds_3d_view
     from . import ds_iclone
     from . import ds_zbc
     from . import ds_substance
@@ -178,7 +177,6 @@ def unregister():
     ds_obj.unregister()
     ds_fbx.unregister()
 
-    from . import ds_3d_view
     from . import ds_iclone
     from . import ds_zbc
     from . import ds_substance
