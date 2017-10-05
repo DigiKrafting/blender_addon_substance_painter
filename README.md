@@ -5,7 +5,7 @@ Provides tools for a Blender + ZBrushCore + Substance Painter + iClone 3D pipeli
 # Features
 
 - One click OBJ Import (Excluding manual file/path selection)
-- One click OBJ Export (Exports selected object to Export Folder)
+- One click OBJ Export (Exports selected object to export folder)
 
 - One click FBX Import (Excluding manual file/path selection)
 - One click FBX Export (Exports scene to export folder)
@@ -49,8 +49,8 @@ Download either the tar.gz or zip from [https://github.com/Digiography/blender_a
 Installing an Addon in Blender
 
 - [File]->[User Preferences]
-- Select [Add ons'] Tab.
-- Click [Install Addon from File..].
+- Select [Add-ons] Tab
+- Click [Install Add-on from File..]
 
 # Screenshots
 
