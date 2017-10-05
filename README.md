@@ -10,9 +10,9 @@ Provides tools for a Blender + ZBrushCore + Substance Painter + iClone 3D pipeli
 - One click FBX Import (Excluding manual file/path selection)
 - One click FBX Export (Exports scene to export folder)
 
-- One click iClone Base FBX Template Import (Copies "Base.fbxkey" to export folder and renames to your blender filename)
-- One click iClone Female FBX Template Import (Copies "Base Female.fbxkey" to export folder and renames to your blender filename)
-- One click iClone Male FBX Template Import (Copies "Base Male.fbxkey" to export folder and renames to your blender filename)
+- One click iClone Base FBX Template Import (Copies "Base.fbxkey" to export folder and renames it to the "blender filename.fbxkey")
+- One click iClone Female FBX Template Import (Copies "Base Female.fbxkey" to export folder and renames it to the "blender filename.fbxkey")
+- One click iClone Male FBX Template Import (Copies "Base Male.fbxkey" to export folder and renames it to the "blender filename.fbxkey")
 
 - One click ZBrushCore OBJ Export (Exports selected object to export folder and opens file in ZBrushCore)
 - One click ZBrushCore OBJ Import (Imports exported obj and replaces vertices co-ordinates on selected object)
