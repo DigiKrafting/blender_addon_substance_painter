@@ -160,7 +160,6 @@ def register():
     ds_iclone.register()
     ds_zbc.register()
     ds_substance.register()
-    ds_3d_view.register()
 
 def unregister():
 
@@ -184,7 +183,6 @@ def unregister():
     ds_iclone.unregister()
     ds_zbc.unregister()
     ds_substance.unregister()
-    ds_3d_view.unregister()
 
     from . import space_info 
 
