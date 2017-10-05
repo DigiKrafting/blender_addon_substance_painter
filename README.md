@@ -28,11 +28,11 @@ Provides tools for a Blender + ZBrushCore + Substance Painter + iClone 3D pipeli
 
 2.79 
 
-* May work in previous versions but untested, space_info.py and space_view3d.py will likely cause unexpected behaviour.
+\* May work in previous versions but untested, space_info.py and space_view3d.py will likely cause unexpected behaviour.
 
 # IMPORTANT USAGE NOTES 
 
-* Make sure you save your .blend file before using the auto import/export features or the addon won't know where to import/export the files.
+\* Make sure you save your .blend file before using the auto import/export features or the addon won't know where to import/export the files.
 
 - File Naming Convention
 
