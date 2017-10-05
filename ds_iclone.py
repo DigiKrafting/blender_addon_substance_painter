@@ -1,6 +1,6 @@
 import bpy
 from subprocess import Popen
-
+from os import system
 from .ds_fbx import (ds_fbx_export,)
 
 class ds_iclone_import_base(bpy.types.Operator):
@@ -9,6 +9,10 @@ class ds_iclone_import_base(bpy.types.Operator):
     bl_label = "Import Base FBX."
 
     def execute(self, context):
+
+        _export_name = bpy.path.basename(bpy.context.blend_data.filepath).replace('.blend','')
+        _export_path = bpy.path.abspath('//') + bpy.context.user_preferences.addons[__package__].preferences.option_export_folder + '\\'
+        system('copy "' + bpy.context.user_preferences.addons[__package__].preferences.option_iclone_templates_path + "Base.fbxkey" + '" "' + _export_path + _export_name + '.fbxkey"')
 
         bpy.ops.import_scene.fbx(filepath = bpy.context.user_preferences.addons[__package__].preferences.option_iclone_templates_path + "Base.fbx", axis_forward='-Z', axis_up='Y')
 
@@ -21,6 +25,10 @@ class ds_iclone_import_female(bpy.types.Operator):
 
     def execute(self, context):
 
+        _export_name = bpy.path.basename(bpy.context.blend_data.filepath).replace('.blend','')
+        _export_path = bpy.path.abspath('//') + bpy.context.user_preferences.addons[__package__].preferences.option_export_folder + '\\'
+        system('copy "' + bpy.context.user_preferences.addons[__package__].preferences.option_iclone_templates_path + "Base Female.fbxkey" + '" "' + _export_path + _export_name + '.fbxkey"')
+        
         bpy.ops.import_scene.fbx(filepath = bpy.context.user_preferences.addons[__package__].preferences.option_iclone_templates_path + "Base Female.fbx", axis_forward='-Z', axis_up='Y')
 
         return {'FINISHED'}
@@ -31,6 +39,10 @@ class ds_iclone_import_male(bpy.types.Operator):
     bl_label = "Import Base Male FBX."
 
     def execute(self, context):
+
+        _export_name = bpy.path.basename(bpy.context.blend_data.filepath).replace('.blend','')
+        _export_path = bpy.path.abspath('//') + bpy.context.user_preferences.addons[__package__].preferences.option_export_folder + '\\'
+        system('copy "' + bpy.context.user_preferences.addons[__package__].preferences.option_iclone_templates_path + "Base Male.fbxkey" + '" "' + _export_path + _export_name + '.fbxkey"')
 
         bpy.ops.import_scene.fbx(filepath = bpy.context.user_preferences.addons[__package__].preferences.option_iclone_templates_path + "Base Male.fbx", axis_forward='-Z', axis_up='Y')
 
