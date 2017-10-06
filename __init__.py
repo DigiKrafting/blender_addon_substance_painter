@@ -20,7 +20,7 @@ bl_info = {
         "name": "Pipeline",
         "description": "3D Pipeline Tools",
         "author": "Digiography.Studio",
-        "version": (0, 5, 0),
+        "version": (0, 6, 0),
         "blender": (2, 79, 0),
         "location": "Properties > Scene, Info Toolbar, 3D View Toolbar",
         "wiki_url":    "https://github.com/Digiography/blender_addon_pipeline/wiki",
