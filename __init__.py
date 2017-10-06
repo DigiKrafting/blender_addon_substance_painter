@@ -76,22 +76,22 @@ class ds_pipeline_addon_prefs(bpy.types.AddonPreferences):
 
     bl_idname = __package__
 
-    option_iclone_exe = bpy.props.StringProperty(
+    option_ic_exe = bpy.props.StringProperty(
             name="iClone Executable",
             subtype='FILE_PATH',
             default="C:\Program Files\Reallusion\iClone 7\Bin64\iClone.exe",
     )    
-    option_iclone_cc_exe = bpy.props.StringProperty(
+    option_ic_cc_exe = bpy.props.StringProperty(
             name="iClone Character Creator Executable",
             subtype='FILE_PATH',
             default="C:\Program Files\Reallusion\Character Creator 2 for iClone\Bin64\CharacterCreator.exe",
     )    
-    option_iclone_3dx_exe = bpy.props.StringProperty(
+    option_ic_3dx_exe = bpy.props.StringProperty(
             name="iClone 3DX Executable",
             subtype='FILE_PATH',
             default="C:\Program Files (x86)\Reallusion\iClone 3DXchange 7\Bin\iClone3DXchange.exe",
     )    
-    option_substance_exe = bpy.props.StringProperty(
+    option_sp_exe = bpy.props.StringProperty(
             name="Substance Executable",
             subtype='FILE_PATH',
             default="C:\Program Files\Allegorithmic\Substance Painter\Substance Painter.exe",
@@ -101,38 +101,73 @@ class ds_pipeline_addon_prefs(bpy.types.AddonPreferences):
             subtype='FILE_PATH',
             default="C:\Program Files\Pixologic\ZBrushCore\ZBrushCore.exe",
     )     
+    option_daz3d_exe = bpy.props.StringProperty(
+            name="Daz3D Executable",
+            subtype='FILE_PATH',
+            default="C:\Program Files\DAZ 3D\DAZStudio4\DAZStudio.exe",
+    )       
     option_export_folder = bpy.props.StringProperty(
             name="Export Folder Name",
             default="eXport",
     )     
-    option_iclone_templates_path = bpy.props.StringProperty(
+    option_ic_templates_path = bpy.props.StringProperty(
             name="iClone Templates Path",
             subtype='DIR_PATH',
             default="",
+    )     
+    option_hide_info_engines = bpy.props.BoolProperty(
+            name="Hide Engines",
+            default=True,
+    )     
+    option_hide_info_scene = bpy.props.BoolProperty(
+            name="Hide Scene",
+            default=True,
+    )     
+    option_show_zbc = bpy.props.BoolProperty(
+            name="Show ZBrushCore Buttons",
+            default=True,
+    )     
+    option_show_ic = bpy.props.BoolProperty(
+            name="Show iClone Buttons",
+            default=True,
+    )     
+    option_show_sp = bpy.props.BoolProperty(
+            name="Show Substance Painter Button",
+            default=True,
+    )     
+    option_show_daz3d = bpy.props.BoolProperty(
+            name="Show Daz3D Button",
+            default=True,
     )     
 
     def draw(self, context):
 
         layout = self.layout
 
+        layout.label('Info toolbar',icon='PREFERENCES')
+
+        layout.prop(self, 'option_hide_info_engines')
+        layout.prop(self, 'option_hide_info_scene')
+
         layout.label('Defaults',icon='PREFERENCES')
-        
+
         layout.prop(self, 'option_export_folder')
         layout.label('Automatically created as a sub folder relative to the saved .blend file.',icon='INFO')
         layout.label('* Do NOT include any "\\".',icon='INFO')
 
         layout.label('Applications',icon='PREFERENCES')
 
+        layout.prop(self, 'option_show_zbc')
         layout.prop(self, 'option_zbc_exe')
-        layout.prop(self, 'option_substance_exe')
-
-        layout.prop(self, 'option_iclone_exe')
-        layout.prop(self, 'option_iclone_3dx_exe')
-        layout.prop(self, 'option_iclone_cc_exe')
-
-        layout.label('iClone',icon='PREFERENCES')
-
-        layout.prop(self, 'option_iclone_templates_path')
+        layout.prop(self, 'option_show_sp')
+        layout.prop(self, 'option_sp_exe')
+        layout.prop(self, 'option_show_ic')
+        layout.prop(self, 'option_ic_exe')
+        layout.prop(self, 'option_ic_3dx_exe')
+        layout.prop(self, 'option_ic_cc_exe')
+        layout.prop(self, 'option_ic_templates_path')
+        layout.prop(self, 'option_show_daz3d')
+        layout.prop(self, 'option_daz3d_exe')
 
 def register():
 
@@ -153,13 +188,15 @@ def register():
     ds_obj.register()
     ds_fbx.register()
 
-    from . import ds_iclone
+    from . import ds_ic
     from . import ds_zbc
-    from . import ds_substance
+    from . import ds_sp
+    from . import ds_daz3d
 
-    ds_iclone.register()
+    ds_ic.register()
     ds_zbc.register()
-    ds_substance.register()
+    ds_sp.register()
+    ds_daz3d.register()
 
 def unregister():
 
@@ -176,13 +213,15 @@ def unregister():
     ds_obj.unregister()
     ds_fbx.unregister()
 
-    from . import ds_iclone
+    from . import ds_ic
     from . import ds_zbc
-    from . import ds_substance
+    from . import ds_sp
+    from . import ds_daz3d
 
-    ds_iclone.unregister()
+    ds_ic.unregister()
     ds_zbc.unregister()
-    ds_substance.unregister()
+    ds_sp.unregister()
+    ds_daz3d.unregister()
 
     from . import space_info 
 

@@ -1,6 +1,6 @@
 # Blender Addon Pipeline
 
-Provides tools for a Blender + ZBrushCore + Substance Painter + iClone 3D pipeline.
+Pipeline import/export/open for ZBrushCore, Substance Painter, iClone, Daz3D.
 
 # Features
 
@@ -20,15 +20,18 @@ Provides tools for a Blender + ZBrushCore + Substance Painter + iClone 3D pipeli
 - One click ZBrushCore OBJ Import (Imports exported obj and replaces vertices co-ordinates on selected object)
 
 - Application Link to Open Substance Painter (Exports scene to export folder before opening Substance Painter)
+
 - Application Link to Open iClone Character Creator (Exports scene to export folder before opening Character Creator for manual import)
 - One click iClone 3DXchange FBX Export (Exports scene to export folder and opens file in 3DXchange)
 - Application Link to Open iClone
+
+- Application Link to Open Daz3D (Exports scene to export folder before opening Daz3D for manual import)
 
 # Required Blender Version
 
 2.79 
 
-\* May work in previous versions but untested, space_info.py and space_view3d.py will likely cause issues/unexpected behaviour.
+\* May work in previous versions but untested, space_info.py will likely cause issues/unexpected behaviour.
 
 # IMPORTANT USAGE NOTES 
 

@@ -40,14 +40,14 @@ class INFO_HT_header(Header):
             layout.separator()
         else:
             layout.template_ID(context.window, "screen", new="screen.new", unlink="screen.delete")
-            #layout.template_ID(context.screen, "scene", new="scene.new", unlink="scene.delete")
+            if not bpy.context.user_preferences.addons[__package__].preferences.option_hide_info_scene:
+                layout.template_ID(context.screen, "scene", new="scene.new", unlink="scene.delete")
+                layout.separator()
 
-        layout.separator()
-
-        #if rd.has_multiple_engines:
-            #layout.prop(rd, "engine", text="")
-
-        #layout.separator()
+        if not bpy.context.user_preferences.addons[__package__].preferences.option_hide_info_engines:
+            if rd.has_multiple_engines:
+                layout.prop(rd, "engine", text="")
+                layout.separator()
         
         layout.operator('import_scene.fbx',text="FBX",icon="IMPORT")
         layout.operator('ds_fbx.export',text="FBX",icon="EXPORT")
@@ -56,21 +56,34 @@ class INFO_HT_header(Header):
         layout.operator('ds_obj.export',text="OBJ",icon="EXPORT")
 
         layout.separator()
+
+        if bpy.context.user_preferences.addons[__package__].preferences.option_show_ic:
         
-        layout.operator('ds_iclone.import_base',text="Base",icon="IMPORT")
-        layout.operator('ds_iclone.import_female',text="Female",icon="IMPORT")
-        layout.operator('ds_iclone.import_male',text="Male",icon="IMPORT")
+            layout.operator('ds_ic.import_base',text="Base",icon="IMPORT")
+            layout.operator('ds_ic.import_female',text="Female",icon="IMPORT")
+            layout.operator('ds_ic.import_male',text="Male",icon="IMPORT")
 
-        layout.separator()
+            layout.separator()
 
-        self.layout.operator('ds_zbc.export',text="ZBC",icon="EXPORT")
-        self.layout.operator('ds_zbc.import',text="ZBC",icon="IMPORT")
-        self.layout.operator('ds_substance.export',text="SP",icon="LINK_BLEND")
+        if bpy.context.user_preferences.addons[__package__].preferences.option_show_zbc:
 
-        layout.operator('ds_iclone.export_cc',text="CC",icon="LINK_BLEND")
-        layout.operator('ds_iclone.export_3dx',text="3DX",icon="EXPORT")
-        layout.operator('ds_iclone.export_ic',text="IC",icon="LINK_BLEND")
+            self.layout.operator('ds_zbc.export',text="ZBC",icon="EXPORT")
+            self.layout.operator('ds_zbc.import',text="ZBC",icon="IMPORT")
 
+        if bpy.context.user_preferences.addons[__package__].preferences.option_show_sp:
+
+            self.layout.operator('ds_sp.export',text="SP",icon="LINK_BLEND")
+
+        if bpy.context.user_preferences.addons[__package__].preferences.option_show_ic:
+
+            layout.operator('ds_ic.export_cc',text="CC",icon="LINK_BLEND")
+            layout.operator('ds_ic.export_3dx',text="3DX",icon="EXPORT")
+            layout.operator('ds_ic.export_ic',text="IC",icon="LINK_BLEND")
+
+        if bpy.context.user_preferences.addons[__package__].preferences.option_show_daz3d:
+
+            self.layout.operator('ds_daz3d.export',text="Daz3D",icon="LINK_BLEND")
+        
         layout.separator()
 
         layout.template_running_jobs()
