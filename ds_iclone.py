@@ -64,11 +64,9 @@ class ds_iclone_export_3dx(bpy.types.Operator):
 class ds_iclone_export_ic(bpy.types.Operator):
 
     bl_idname = "ds_iclone.export_ic"
-    bl_label = "Export FBX and open iClone."
+    bl_label = "Open iClone."
 
     def execute(self, context):
-
-        export_file = ds_fbx_export(self, context)
 
         Popen([bpy.context.user_preferences.addons[__package__].preferences.option_iclone_exe])
 

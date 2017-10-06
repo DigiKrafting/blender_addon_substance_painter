@@ -22,7 +22,7 @@ Provides tools for a Blender + ZBrushCore + Substance Painter + iClone 3D pipeli
 - Application Link to Open Substance Painter (Exports scene to export folder before opening Substance Painter)
 - Application Link to Open iClone Character Creator (Exports scene to export folder before opening Character Creator for manual import)
 - One click iClone 3DXchange FBX Export (Exports scene to export folder and opens file in 3DXchange)
-- Application Link to Open iClone (Exports scene to export folder before opening iClone for manual import)
+- Application Link to Open iClone
 
 # Required Blender Version
 
