@@ -47,8 +47,6 @@ Pipeline import/export/open for ZBrushCore, Substance Painter, iClone, Daz3D.
 
 # Installation
 
-\* GitHub automatically appends the version number to the download filenames which causes blender not to load the addon, the easy fix for this is to remove the version number from the downloaded filename before installing in Blender. E.g. addon-0.5.zip to addon.zip.
-
 Download either the tar.gz or zip from [https://github.com/Digiography/blender_addon_pipeline/releases/latest](https://github.com/Digiography/blender_addon_pipeline/releases/latest)
 
 Installing an Addon in Blender
