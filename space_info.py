@@ -31,15 +31,30 @@ class INFO_HT_header(Header):
         rd = scene.render
 
         row = layout.row(align=True)
-        row.template_header()
 
-        INFO_MT_editor_menus.draw_collapsible(context, layout)
+        if not bpy.context.user_preferences.addons[__package__].preferences.option_hide_info_switcher:
+
+            row.template_header()
+
+        if bpy.context.user_preferences.addons[__package__].preferences.option_move_blender_left:
+
+            row.operator("wm.splash", text="", icon='BLENDER', emboss=False)
+
+        if bpy.context.user_preferences.addons[__package__].preferences.option_show_menu_toggle:
+            layout.operator('ds_pipeline.menu_toggle',icon='TRIA_RIGHT')
+
+        if not bpy.context.user_preferences.addons[__package__].preferences.option_hide_info_menus or bpy.context.user_preferences.addons[__package__].preferences.option_show_menu_toggle_btn:
+
+            INFO_MT_editor_menus.draw_collapsible(context, layout)
 
         if window.screen.show_fullscreen:
             layout.operator("screen.back_to_previous", icon='SCREEN_BACK', text="Back to Previous")
             layout.separator()
         else:
-            layout.template_ID(context.window, "screen", new="screen.new", unlink="screen.delete")
+
+            if not bpy.context.user_preferences.addons[__package__].preferences.option_hide_info_screens:
+                layout.template_ID(context.window, "screen", new="screen.new", unlink="screen.delete")
+
             if not bpy.context.user_preferences.addons[__package__].preferences.option_hide_info_scene:
                 layout.template_ID(context.screen, "scene", new="scene.new", unlink="scene.delete")
                 layout.separator()
@@ -48,7 +63,48 @@ class INFO_HT_header(Header):
             if rd.has_multiple_engines:
                 layout.prop(rd, "engine", text="")
                 layout.separator()
+
+        if bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle:
+            layout.operator('ds_pipeline.screens_toggle',icon='TRIA_RIGHT')
+
+        if (not bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle and bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_3dview) or(bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_3dview and bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_btn):
+            layout.operator('ds_pipeline.screen_3dview')
+
+        if (not bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle and bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_anim) or(bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_anim and bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_btn):
+            layout.operator('ds_pipeline.screen_anim')
+
+        if (not bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle and bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_compositing) or(bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_compositing and bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_btn):
+            layout.operator('ds_pipeline.screen_compositing')
+
+        if (not bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle and bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_default) or(bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_default and bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_btn):
+            layout.operator('ds_pipeline.screen_default')
+
+        if (not bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle and bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_game) or(bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_game and bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_btn):
+            layout.operator('ds_pipeline.screen_game')
+
+        if (not bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle and bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_motion) or(bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_motion and bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_btn):
+            layout.operator('ds_pipeline.screen_motion')
+
+        if (not bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle and bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_scripting) or(bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_scripting and bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_btn):
+            layout.operator('ds_pipeline.screen_scripting')
+
+        if (not bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle and bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_uv) or(bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_uv and bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_btn):
+            layout.operator('ds_pipeline.screen_uv')
+
+        if (not bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle and bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_video) or(bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_video and bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_btn):
+            layout.operator('ds_pipeline.screen_video')
+
+        if bpy.context.user_preferences.addons[__package__].preferences.option_show_save:
         
+            if bpy.data.is_dirty:
+                layout.operator('ds.save',text="Save",icon='LINK')
+            else:
+                layout.operator('ds.save',text="Save",icon='FILE_TICK')
+
+        if bpy.context.user_preferences.addons[__package__].preferences.option_show_save_as:
+        
+            layout.operator('ds.save_as',text="Save As",icon='SAVE_AS')
+
         layout.operator('import_scene.fbx',text="FBX",icon="IMPORT")
         layout.operator('ds_fbx.export',text="FBX",icon="EXPORT")
 
@@ -83,8 +139,22 @@ class INFO_HT_header(Header):
         if bpy.context.user_preferences.addons[__package__].preferences.option_show_daz3d:
 
             self.layout.operator('ds_daz3d.export',text="Daz3D",icon="LINK_BLEND")
-        
-        layout.separator()
+
+        if bpy.context.user_preferences.addons[__package__].preferences.option_show_fullscreen:
+
+            layout.operator('ds_pipeline.fullscreen',text="",icon='FULLSCREEN_ENTER')
+
+        if bpy.context.user_preferences.addons[__package__].preferences.option_show_prefs:
+
+            layout.operator('ds_pipeline.prefs_open',text="",icon='PREFERENCES')
+
+        if bpy.context.user_preferences.addons[__package__].preferences.option_show_console:
+
+            layout.operator('ds_pipeline.console',text="",icon='CONSOLE')
+
+        if bpy.context.user_preferences.addons[__package__].preferences.option_show_quit:
+
+            layout.operator('ds_pipeline.quit',text="",icon='QUIT')
 
         layout.template_running_jobs()
 
@@ -104,8 +174,13 @@ class INFO_HT_header(Header):
             row.label(bpy.app.autoexec_fail_message)
             return
 
-        row.operator("wm.splash", text="", icon='BLENDER', emboss=False)
-        row.label(text=scene.statistics(), translate=False)
+        if not bpy.context.user_preferences.addons[__package__].preferences.option_move_blender_left:
+
+            row.operator("wm.splash", text="", icon='BLENDER', emboss=False)
+
+        if not bpy.context.user_preferences.addons[__package__].preferences.option_hide_info_stats:
+
+            row.label(text=scene.statistics(), translate=False)
 
 
 class INFO_MT_editor_menus(Menu):

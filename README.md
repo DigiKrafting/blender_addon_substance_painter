@@ -37,7 +37,7 @@ Pipeline import/export/open for OBJ, FBX, ZBrushCore, Substance Painter, iClone,
 
 # IMPORTANT USAGE NOTES 
 
-\* Make sure you save your .blend file before using the auto import/export features or the addon won't know where to import/export the files.
+\* Make sure you have a saved .blend file before using the auto import/export features, then saving before import/export is then not required. The addon needs the file location to know where to create the export folder used for import/export of the files.
 
 - File Naming Convention
 
