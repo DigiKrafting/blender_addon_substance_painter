@@ -1,10 +1,13 @@
 # Blender Addon Pipeline
 
-Pipeline import/export/open for ZBrushCore, Substance Painter, iClone, Daz3D.
+Pipeline import/export/open for OBJ, FBX, ZBrushCore, Substance Painter, iClone, Daz3D.
 
 # Features
 
-- Customised Info toolbar
+## Info Toolbar
+- Hide Render Engines Selector
+- Hide Scene Selector
+- Hide Unneeded Applications
 ## OBJ
 - One click OBJ Import (Excluding manual file/path selection)
 - One click OBJ Export (Exports selected object to export folder)
