@@ -43,7 +43,7 @@ class INFO_HT_header(Header):
         if bpy.context.user_preferences.addons[__package__].preferences.option_show_menu_toggle:
             layout.operator('ds_pipeline.menu_toggle',icon='TRIA_RIGHT')
 
-        if not bpy.context.user_preferences.addons[__package__].preferences.option_hide_info_menus or bpy.context.user_preferences.addons[__package__].preferences.option_show_menu_toggle_btn:
+        if not bpy.context.user_preferences.addons[__package__].preferences.option_hide_info_menus or bpy.context.user_preferences.addons[__package__].preferences.option_show_menu_toggle_state:
 
             INFO_MT_editor_menus.draw_collapsible(context, layout)
 
@@ -67,32 +67,38 @@ class INFO_HT_header(Header):
         if bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle:
             layout.operator('ds_pipeline.screens_toggle',icon='TRIA_RIGHT')
 
-        if (not bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle and bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_3dview) or(bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_3dview and bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_btn):
+        if (not bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle and bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_3dview) or(bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_3dview and bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_state):
             layout.operator('ds_pipeline.screen_3dview')
 
-        if (not bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle and bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_anim) or(bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_anim and bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_btn):
+        if (not bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle and bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_anim) or(bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_anim and bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_state):
             layout.operator('ds_pipeline.screen_anim')
 
-        if (not bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle and bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_compositing) or(bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_compositing and bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_btn):
+        if (not bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle and bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_compositing) or(bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_compositing and bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_state):
             layout.operator('ds_pipeline.screen_compositing')
 
-        if (not bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle and bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_default) or(bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_default and bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_btn):
+        if (not bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle and bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_default) or(bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_default and bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_state):
             layout.operator('ds_pipeline.screen_default')
 
-        if (not bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle and bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_game) or(bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_game and bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_btn):
+        if (not bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle and bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_game) or(bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_game and bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_state):
             layout.operator('ds_pipeline.screen_game')
 
-        if (not bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle and bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_motion) or(bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_motion and bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_btn):
+        if (not bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle and bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_motion) or(bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_motion and bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_state):
             layout.operator('ds_pipeline.screen_motion')
 
-        if (not bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle and bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_scripting) or(bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_scripting and bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_btn):
+        if (not bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle and bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_scripting) or(bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_scripting and bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_state):
             layout.operator('ds_pipeline.screen_scripting')
 
-        if (not bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle and bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_uv) or(bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_uv and bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_btn):
+        if (not bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle and bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_uv) or(bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_uv and bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_state):
             layout.operator('ds_pipeline.screen_uv')
 
-        if (not bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle and bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_video) or(bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_video and bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_btn):
+        if (not bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle and bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_video) or(bpy.context.user_preferences.addons[__package__].preferences.option_show_screen_video and bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_state):
             layout.operator('ds_pipeline.screen_video')
+
+        if bpy.context.user_preferences.addons[__package__].preferences.option_show_new:
+            layout.operator('ds.new',text="New",icon='NEW')
+
+        if bpy.context.user_preferences.addons[__package__].preferences.option_show_open:
+            layout.operator('ds.open',text="Open",icon='FILE_FOLDER')
 
         if bpy.context.user_preferences.addons[__package__].preferences.option_show_save:
         
@@ -113,14 +119,6 @@ class INFO_HT_header(Header):
 
         layout.separator()
 
-        if bpy.context.user_preferences.addons[__package__].preferences.option_show_ic:
-        
-            layout.operator('ds_ic.import_base',text="Base",icon="IMPORT")
-            layout.operator('ds_ic.import_female',text="Female",icon="IMPORT")
-            layout.operator('ds_ic.import_male',text="Male",icon="IMPORT")
-
-            layout.separator()
-
         if bpy.context.user_preferences.addons[__package__].preferences.option_show_zbc:
 
             self.layout.operator('ds_zbc.export',text="ZBC",icon="EXPORT")
@@ -130,7 +128,14 @@ class INFO_HT_header(Header):
 
             self.layout.operator('ds_sp.export',text="SP",icon="LINK_BLEND")
 
-        if bpy.context.user_preferences.addons[__package__].preferences.option_show_ic:
+        if bpy.context.user_preferences.addons[__package__].preferences.option_show_ic and bpy.context.user_preferences.addons[__package__].preferences.option_show_iclone_toggle:
+            layout.operator('ds_pipeline.iclone_toggle',icon='TRIA_RIGHT')
+
+        if (not bpy.context.user_preferences.addons[__package__].preferences.option_show_iclone_toggle and bpy.context.user_preferences.addons[__package__].preferences.option_show_ic) or (bpy.context.user_preferences.addons[__package__].preferences.option_show_ic and bpy.context.user_preferences.addons[__package__].preferences.option_show_iclone_toggle and bpy.context.user_preferences.addons[__package__].preferences.option_show_iclone_toggle_state):
+
+            layout.operator('ds_ic.import_base',text="Base",icon="IMPORT")
+            layout.operator('ds_ic.import_female',text="Female",icon="IMPORT")
+            layout.operator('ds_ic.import_male',text="Male",icon="IMPORT")
 
             layout.operator('ds_ic.export_cc',text="CC",icon="LINK_BLEND")
             layout.operator('ds_ic.export_3dx',text="3DX",icon="EXPORT")

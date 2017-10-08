@@ -20,7 +20,7 @@ bl_info = {
         "name": "Pipeline",
         "description": "3D Pipeline Tools",
         "author": "Digiography.Studio",
-        "version": (0, 7, 0),
+        "version": (0, 7, 5),
         "blender": (2, 79, 0),
         "location": "Properties > Scene, Info Toolbar, 3D View Toolbar",
         "wiki_url":    "https://github.com/Digiography/blender_addon_pipeline/wiki",
@@ -164,6 +164,14 @@ class ds_pipeline_addon_prefs(bpy.types.AddonPreferences):
                 name="Show Daz3D Button",
                 default=True,
         )     
+        option_show_open = bpy.props.BoolProperty(
+                name="Open Button",
+                default=True,
+        )     
+        option_show_new = bpy.props.BoolProperty(
+                name="New Button",
+                default=True,
+        )     
         option_show_save = bpy.props.BoolProperty(
                 name="Save Button",
                 default=True,
@@ -224,7 +232,7 @@ class ds_pipeline_addon_prefs(bpy.types.AddonPreferences):
                 name="Menu Toggle",
                 default=True,
         )     
-        option_show_menu_toggle_btn = bpy.props.BoolProperty(
+        option_show_menu_toggle_state = bpy.props.BoolProperty(
                 name="Menu Toggle Button State",
                 default=False,
         )     
@@ -232,7 +240,7 @@ class ds_pipeline_addon_prefs(bpy.types.AddonPreferences):
                 name="Screens Toggle",
                 default=True,
         )     
-        option_show_screens_toggle_btn = bpy.props.BoolProperty(
+        option_show_screens_toggle_state = bpy.props.BoolProperty(
                 name="Screens Toggle Button State",
                 default=False,
         )     
@@ -248,7 +256,14 @@ class ds_pipeline_addon_prefs(bpy.types.AddonPreferences):
                 name="Stats",
                 default=False,
         )     
-
+        option_show_iclone_toggle = bpy.props.BoolProperty(
+                name="iClone Toggle",
+                default=True,
+        )     
+        option_show_iclone_toggle_state = bpy.props.BoolProperty(
+                name="iClone Toggle Button State",
+                default=False,
+        )     
         def draw(self, context):
 
                 layout = self.layout
@@ -279,6 +294,9 @@ class ds_pipeline_addon_prefs(bpy.types.AddonPreferences):
                 box.label('Show',icon='UI')
                 box.prop(self, 'option_show_menu_toggle')
                 box.prop(self, 'option_show_screens_toggle')
+                box.prop(self, 'option_show_iclone_toggle')                
+                box.prop(self, 'option_show_new')
+                box.prop(self, 'option_show_open')
                 box.prop(self, 'option_show_save')
                 box.prop(self, 'option_show_save_as')
                 box.prop(self, 'option_show_fullscreen')
@@ -345,10 +363,10 @@ class ds_pipeline_menu_toggle(bpy.types.Operator):
     bl_region_type = 'WINDOW'
     def execute(self, context):
 
-        if not bpy.context.user_preferences.addons[__package__].preferences.option_show_menu_toggle_btn:
-                bpy.context.user_preferences.addons[__package__].preferences.option_show_menu_toggle_btn=True
+        if not bpy.context.user_preferences.addons[__package__].preferences.option_show_menu_toggle_state:
+                bpy.context.user_preferences.addons[__package__].preferences.option_show_menu_toggle_state=True
         else:
-                bpy.context.user_preferences.addons[__package__].preferences.option_show_menu_toggle_btn=False
+                bpy.context.user_preferences.addons[__package__].preferences.option_show_menu_toggle_state=False
         return {'FINISHED'}
 
 class ds_pipeline_screens_toggle(bpy.types.Operator):
@@ -358,10 +376,23 @@ class ds_pipeline_screens_toggle(bpy.types.Operator):
     bl_region_type = 'WINDOW'
     def execute(self, context):
 
-        if not bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_btn:
-                bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_btn=True
+        if not bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_state:
+                bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_state=True
         else:
-                bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_btn=False
+                bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_state=False
+        return {'FINISHED'}
+
+class ds_pipeline_iclone_toggle(bpy.types.Operator):
+    bl_idname = "ds_pipeline.iclone_toggle"
+    bl_label = "iClone"
+    bl_space_type = 'PROPERTIES'
+    bl_region_type = 'WINDOW'
+    def execute(self, context):
+
+        if not bpy.context.user_preferences.addons[__package__].preferences.option_show_iclone_toggle_state:
+                bpy.context.user_preferences.addons[__package__].preferences.option_show_iclone_toggle_state=True
+        else:
+                bpy.context.user_preferences.addons[__package__].preferences.option_show_iclone_toggle_state=False
         return {'FINISHED'}
 
 class ds_pipeline_quit(bpy.types.Operator):
@@ -393,7 +424,7 @@ class ds_pipeline_screen_3dview(bpy.types.Operator):
     bl_region_type = 'WINDOW'
     def execute(self, context):
         bpy.context.window.screen = bpy.data.screens['3D View Full']
-        bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_btn=False
+        bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_state=False
         return {'FINISHED'}
 class ds_pipeline_screen_anim(bpy.types.Operator):
     bl_idname = "ds_pipeline.screen_anim"
@@ -402,7 +433,7 @@ class ds_pipeline_screen_anim(bpy.types.Operator):
     bl_region_type = 'WINDOW'
     def execute(self, context):
         bpy.context.window.screen = bpy.data.screens['Animation']
-        bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_btn=False
+        bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_state=False
         return {'FINISHED'}
 class ds_pipeline_screen_compositing(bpy.types.Operator):
     bl_idname = "ds_pipeline.screen_compositing"
@@ -411,7 +442,7 @@ class ds_pipeline_screen_compositing(bpy.types.Operator):
     bl_region_type = 'WINDOW'
     def execute(self, context):
         bpy.context.window.screen = bpy.data.screens['Compositing']
-        bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_btn=False
+        bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_state=False
         return {'FINISHED'}
 class ds_pipeline_screen_default(bpy.types.Operator):
     bl_idname = "ds_pipeline.screen_default"
@@ -420,7 +451,7 @@ class ds_pipeline_screen_default(bpy.types.Operator):
     bl_region_type = 'WINDOW'
     def execute(self, context):
         bpy.context.window.screen = bpy.data.screens['Default']
-        bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_btn=False
+        bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_state=False
         return {'FINISHED'}
 class ds_pipeline_screen_game(bpy.types.Operator):
     bl_idname = "ds_pipeline.screen_game"
@@ -429,7 +460,7 @@ class ds_pipeline_screen_game(bpy.types.Operator):
     bl_region_type = 'WINDOW'
     def execute(self, context):
         bpy.context.window.screen = bpy.data.screens['Game Logic']
-        bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_btn=False
+        bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_state=False
         return {'FINISHED'}
 class ds_pipeline_screen_motion(bpy.types.Operator):
     bl_idname = "ds_pipeline.screen_motion"
@@ -438,7 +469,7 @@ class ds_pipeline_screen_motion(bpy.types.Operator):
     bl_region_type = 'WINDOW'
     def execute(self, context):
         bpy.context.window.screen = bpy.data.screens['Motion Tracking']
-        bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_btn=False
+        bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_state=False
         return {'FINISHED'}
 class ds_pipeline_screen_scripting(bpy.types.Operator):
     bl_idname = "ds_pipeline.screen_scripting"
@@ -447,7 +478,7 @@ class ds_pipeline_screen_scripting(bpy.types.Operator):
     bl_region_type = 'WINDOW'
     def execute(self, context):
         bpy.context.window.screen = bpy.data.screens['Scripting']
-        bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_btn=False
+        bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_state=False
         return {'FINISHED'}
 class ds_pipeline_screen_uv(bpy.types.Operator):
     bl_idname = "ds_pipeline.screen_uv"
@@ -456,7 +487,7 @@ class ds_pipeline_screen_uv(bpy.types.Operator):
     bl_region_type = 'WINDOW'
     def execute(self, context):
         bpy.context.window.screen = bpy.data.screens['UV Editing']
-        bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_btn=False
+        bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_state=False
         return {'FINISHED'}
 class ds_pipeline_screen_video(bpy.types.Operator):
     bl_idname = "ds_pipeline.screen_video"
@@ -465,7 +496,7 @@ class ds_pipeline_screen_video(bpy.types.Operator):
     bl_region_type = 'WINDOW'
     def execute(self, context):
         bpy.context.window.screen = bpy.data.screens['Video Editing']
-        bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_btn=False
+        bpy.context.user_preferences.addons[__package__].preferences.option_show_screens_toggle_state=False
         return {'FINISHED'}
 
 class ds_pipeline_prefs_open(bpy.types.Operator):
@@ -478,6 +509,32 @@ class ds_pipeline_prefs_open(bpy.types.Operator):
     def execute(self, context):
         
         bpy.ops.screen.userpref_show('INVOKE_DEFAULT')
+
+        return {'FINISHED'}
+
+class ds_new(bpy.types.Operator):
+
+    bl_idname = "ds.new"
+    bl_label = "New"
+    bl_space_type = 'PROPERTIES'
+    bl_region_type = 'WINDOW'
+ 
+    def execute(self, context):
+
+        bpy.ops.wm.read_homefile()
+
+        return {'FINISHED'}
+
+class ds_open(bpy.types.Operator):
+
+    bl_idname = "ds.open"
+    bl_label = "Open"
+    bl_space_type = 'PROPERTIES'
+    bl_region_type = 'WINDOW'
+ 
+    def execute(self, context):
+
+        bpy.ops.wm.open_mainfile()
 
         return {'FINISHED'}
 
@@ -513,7 +570,10 @@ def register():
 
     register_class(ds_pipeline_menu_toggle)
     register_class(ds_pipeline_screens_toggle)
+    register_class(ds_pipeline_iclone_toggle)
     
+    register_class(ds_new)
+    register_class(ds_open)
     register_class(ds_save)
     register_class(ds_save_as)
     register_class(ds_pipeline_addon_prefs)
@@ -563,7 +623,10 @@ def unregister():
         
     unregister_class(ds_pipeline_menu_toggle)
     unregister_class(ds_pipeline_screens_toggle)
+    unregister_class(ds_pipeline_iclone_toggle)
 
+    unregister_class(ds_new)
+    unregister_class(ds_open)
     unregister_class(ds_save)
     unregister_class(ds_save_as)
     unregister_class(ds_pipeline_addon_prefs)
