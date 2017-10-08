@@ -95,21 +95,35 @@ class INFO_HT_header(Header):
             layout.operator('ds_pipeline.screen_video')
 
         if bpy.context.user_preferences.addons[__package__].preferences.option_show_new:
-            layout.operator('ds.new',text="New",icon='NEW')
+            if bpy.context.user_preferences.addons[__package__].preferences.option_show_file_icons:
+                _text=""
+            else:
+                _text="New"
+            layout.operator('ds.new',text=_text,icon='NEW')
 
         if bpy.context.user_preferences.addons[__package__].preferences.option_show_open:
-            layout.operator('ds.open',text="Open",icon='FILE_FOLDER')
+            if bpy.context.user_preferences.addons[__package__].preferences.option_show_file_icons:
+                _text=""
+            else:
+                _text="Open"
+            layout.operator('ds.open',text=_text,icon='FILE_FOLDER')
 
         if bpy.context.user_preferences.addons[__package__].preferences.option_show_save:
-        
-            if bpy.data.is_dirty:
-                layout.operator('ds.save',text="Save",icon='LINK')
+            if bpy.context.user_preferences.addons[__package__].preferences.option_show_file_icons:
+                _text=""
             else:
-                layout.operator('ds.save',text="Save",icon='FILE_TICK')
+                _text="Save"
+            if bpy.data.is_dirty:
+                layout.operator('ds.save',text=_text,icon='LINK')
+            else:
+                layout.operator('ds.save',text=_text,icon='FILE_TICK')
 
         if bpy.context.user_preferences.addons[__package__].preferences.option_show_save_as:
-        
-            layout.operator('ds.save_as',text="Save As",icon='SAVE_AS')
+            if bpy.context.user_preferences.addons[__package__].preferences.option_show_file_icons:
+                _text=""
+            else:
+                _text="Save As"
+            layout.operator('wm.save_as_mainfile',text=_text,icon='SAVE_AS')
 
         layout.operator('import_scene.fbx',text="FBX",icon="IMPORT")
         layout.operator('ds_fbx.export',text="FBX",icon="EXPORT")

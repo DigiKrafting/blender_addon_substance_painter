@@ -20,7 +20,7 @@ bl_info = {
         "name": "Pipeline",
         "description": "3D Pipeline Tools",
         "author": "Digiography.Studio",
-        "version": (0, 7, 5),
+        "version": (0, 8, 0),
         "blender": (2, 79, 0),
         "location": "Properties > Scene, Info Toolbar, 3D View Toolbar",
         "wiki_url":    "https://github.com/Digiography/blender_addon_pipeline/wiki",
@@ -168,6 +168,10 @@ class ds_pipeline_addon_prefs(bpy.types.AddonPreferences):
                 name="Open Button",
                 default=True,
         )     
+        option_show_file_icons = bpy.props.BoolProperty(
+                name="File Icons Only",
+                default=True,
+        )     
         option_show_new = bpy.props.BoolProperty(
                 name="New Button",
                 default=True,
@@ -295,6 +299,7 @@ class ds_pipeline_addon_prefs(bpy.types.AddonPreferences):
                 box.prop(self, 'option_show_menu_toggle')
                 box.prop(self, 'option_show_screens_toggle')
                 box.prop(self, 'option_show_iclone_toggle')                
+                box.prop(self, 'option_show_file_icons')
                 box.prop(self, 'option_show_new')
                 box.prop(self, 'option_show_open')
                 box.prop(self, 'option_show_save')
