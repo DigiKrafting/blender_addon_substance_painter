@@ -1,2 +1,3 @@
 # Editor Files/Folder
 .vscode/
+__pycache__

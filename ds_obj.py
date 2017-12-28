@@ -1,20 +1,25 @@
 import bpy
 
-from os import path, makedirs
+from . import ds_pipeline
 
 def ds_obj_filename(self, context):
 
     _object_name = bpy.context.scene.objects.active.name
-    _export_path = bpy.path.abspath('//') + bpy.context.user_preferences.addons[__package__].preferences.option_export_folder + '//'
-    _filename = _export_path + _object_name + '.obj'
-  
-    return _filename
+    _export_path = ds_pipeline.get_export_path()
+    _export_file = _export_path + _object_name + '.obj'
+
+    if not bpy.context.user_preferences.addons[__package__].preferences.option_save_before_export:
+        bpy.ops.wm.save_mainfile()
+
+    return _export_file
 
 def ds_obj_export(self, context):
 
     _export_file = ds_obj_filename(self, context)
 
-    bpy.ops.export_scene.obj(filepath=_export_file, use_selection=True, axis_forward='-Z', axis_up='Y', global_scale=100.0, keep_vertex_order=True)
+    bpy.ops.object.transform_apply( location=True, rotation = True, scale = True )
+    
+    bpy.ops.export_scene.obj(filepath=_export_file, use_selection=True, axis_forward='-Z', axis_up='Y', global_scale=1.0, keep_vertex_order=True)
 
     return _export_file
 

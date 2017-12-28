@@ -1,24 +1,17 @@
 # Blender Addon Pipeline
 
-Pipeline import/export/open for OBJ, FBX, ZBrushCore, Substance Painter, iClone, Daz3D.
+Pipeline import/export/open for ZBrushCore, Substance Painter, iClone, Daz3D.
 
 # Features
 
-## Info Toolbar
-- Hide Render Engines Selector
-- Hide Scene Selector
-- Hide Unneeded Applications
-## OBJ
-- One click OBJ Import (Excluding manual file/path selection)
-- One click OBJ Export (Exports selected object to export folder)
-## FBX
-- One click FBX Import (Excluding manual file/path selection)
-- One click FBX Export (Exports scene to export folder)
 ## ZBrushCore
 - One click ZBrushCore OBJ Export (Exports selected object to export folder and opens file in ZBrushCore)
 - One click ZBrushCore OBJ Import (Imports exported obj and replaces vertices co-ordinates on selected object)
+\* When exporting from ZBrushCore be sure to export to the same obj file that was used for import.
 ## Substance Painter
-- Application Link to Open Substance Painter (Exports scene to export folder before opening Substance Painter)
+- One Click Substance Painter OBJ Export (Exports selected object to export folder and opens file in Substance Painter)
+- One Click Substance Painter FBX Export (Exports scene to export folder and opens file in Substance Painter)
+\* Creates SPP Project File based on blender filename and passes texture folder for export.
 ## iClone/Character Creator/3DXchange
 - One click iClone Base FBX Template Import (Copies "Base.fbxkey" to export folder and renames it to the Blender "filename.fbxkey")
 - One click iClone Female FBX Template Import (Copies "Base Female.fbxkey" to export folder and renames it to the Blender "filename.fbxkey")
@@ -33,19 +26,15 @@ Pipeline import/export/open for OBJ, FBX, ZBrushCore, Substance Painter, iClone,
 
 2.79.0
 
-\* May work in previous versions but untested, space_info.py will likely cause issues/unexpected behaviour.
+\* Will likely work in previous versions but untested.
 
 # IMPORTANT USAGE NOTES 
 
-\* Make sure you have a saved .blend file before using the auto import/export features, then saving before import/export is then not required. The addon needs the file location to know where to create the export folder used for import/export of the files.
+\* Make sure you have a saved .blend file before using the auto import/export features, then saving before import/export is then not required. The addon needs the file location to know where to create the export and textures folder used for import/export of the files.
 
 - File Naming Convention
 
     File names are derived from the selected object name or your blender file name.
-
-- ZBrushCore
-
-    When exporting from ZBrushCore be sure to export to the same obj file that was used for import.
 
 # Installation
 
