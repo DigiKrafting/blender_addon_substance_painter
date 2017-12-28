@@ -20,7 +20,7 @@ bl_info = {
         "name": "Pipeline",
         "description": "3D Pipeline Tools",
         "author": "Digiography.Studio",
-        "version": (0, 9, 0),
+        "version": (0, 9, 5),
         "blender": (2, 79, 0),
         "location": "Info Toolbar, File -> Import, File -> Export",
         "wiki_url":    "https://github.com/Digiography/blender_addon_pipeline/wiki",
@@ -83,7 +83,15 @@ class ds_pipeline_addon_prefs(bpy.types.AddonPreferences):
         option_show_zbc = bpy.props.BoolProperty(
                 name="Show ZBrushCore Buttons",
                 default=True,
-        )     
+        )
+        option_show_iclone_toggle = bpy.props.BoolProperty(
+                name="iClone Toggle",
+                default=True,
+        )
+        option_show_iclone_toggle_state = bpy.props.BoolProperty(
+                name="iClone Toggle Button State",
+                default=False,
+        )                          
         option_show_ic = bpy.props.BoolProperty(
                 name="Show iClone Buttons",
                 default=True,
@@ -191,14 +199,18 @@ def Draw_Pipeline_Menu(self, context):
         layout = self.layout
         layout.menu(Pipeline_Menu.bl_idname,icon="EXPORT")
 
-def get_export_path():
+class ds_pipeline_iclone_toggle(bpy.types.Operator):
+    bl_idname = "ds_pipeline.iclone_toggle"
+    bl_label = "iClone"
+    bl_space_type = 'PROPERTIES'
+    bl_region_type = 'WINDOW'
+    def execute(self, context):
 
-        _export_path = bpy.path.abspath('//') + bpy.context.user_preferences.addons[__package__].preferences.option_export_folder + '\\'
-
-        if not path.exists(_export_path):
-                makedirs(_export_path)
-
-        return _export_path
+        if not bpy.context.user_preferences.addons[__package__].preferences.option_show_iclone_toggle_state:
+                bpy.context.user_preferences.addons[__package__].preferences.option_show_iclone_toggle_state=True
+        else:
+                bpy.context.user_preferences.addons[__package__].preferences.option_show_iclone_toggle_state=False
+        return {'FINISHED'}
 
 def register():
 
@@ -206,6 +218,7 @@ def register():
 
     register_class(ds_pipeline_addon_prefs)
     register_class(ds_pipeline_prefs_open)
+    register_class(ds_pipeline_iclone_toggle)
 
     from . import ds_obj
     from . import ds_fbx
@@ -244,6 +257,7 @@ def unregister():
         
     unregister_class(ds_pipeline_addon_prefs)
     unregister_class(ds_pipeline_prefs_open)
+    unregister_class(ds_pipeline_iclone_toggle)
 
     from . import ds_obj
     from . import ds_fbx
