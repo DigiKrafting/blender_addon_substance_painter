@@ -14,7 +14,7 @@ Pipeline import/export/open for ZBrushCore, Substance Painter, iClone, Daz3D.
 - One Click Substance Painter OBJ Export (Exports selected object to export folder and opens file in Substance Painter)
 - One Click Substance Painter FBX Export (Exports scene to export folder and opens file in Substance Painter)
 
-\* Creates SPP Project File based on blender filename and passes texture folder for export.
+\* Creates SPP Project File "filename.spp" and passes textures folder from preferences for export.
 
 ## iClone/Character Creator/3DXchange
 - One click iClone Base FBX Template Import (Copies "Base.fbxkey" to export folder and renames it to the Blender "filename.fbxkey")
