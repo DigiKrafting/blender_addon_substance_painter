@@ -1,30 +1,16 @@
-# Blender Addon Pipeline
+# Blender Addon Substance Painter
 
-Pipeline import/export/open for ZBrushCore, Substance Painter, iClone, Daz3D.
+Pipeline/Workflow import/export for Substance Painter.
 
 # Features
 
-## ZBrushCore
-- One click ZBrushCore OBJ Export (Exports selected object to export folder and opens file in ZBrushCore)
-- One click ZBrushCore OBJ Import (Imports exported obj and replaces vertices co-ordinates on selected object)
-
-\* When exporting from ZBrushCore be sure to export to the same obj file that was used for import.
-
-## Substance Painter
-- One Click Substance Painter OBJ Export (Exports selected object to export folder and opens file in Substance Painter)
-- One Click Substance Painter FBX Export (Exports scene to export folder and opens file in Substance Painter)
+- One Click Substance Painter Object Export (Exports selected object to export folder and opens file in Substance Painter)
+- One Click Import of created Textures for Object (Imports from set folder and creates Nodes using the Principled BSDF shader)
+- One Click Substance Painter Scene Export (Exports scene to export folder and opens file in Substance Painter)
+- One Click Import of created Textures for Scene (Imports from set folder and creates Nodes using the Principled BSDF shader)
+- Export in either FBX or OBJ
 
 \* Creates SPP Project File "filename.spp" and passes textures folder from preferences for export.
-
-## iClone/Character Creator/3DXchange
-- One click iClone Base FBX Template Import (Copies "Base.fbxkey" to export folder and renames it to the Blender "filename.fbxkey")
-- One click iClone Female FBX Template Import (Copies "Base Female.fbxkey" to export folder and renames it to the Blender "filename.fbxkey")
-- One click iClone Male FBX Template Import (Copies "Base Male.fbxkey" to export folder and renames it to the Blender "filename.fbxkey")
-- One click iClone 3DXchange FBX Export (Exports scene to export folder and opens file in 3DXchange)
-- Application Link to Open iClone Character Creator (Exports scene to export folder before opening Character Creator for manual import)
-- Application Link to Open iClone
-## Daz3D
-- Application Link to Open Daz3D (Exports scene to export folder before opening Daz3D for manual import)
 
 # Required Blender Version
 
@@ -42,7 +28,7 @@ Pipeline import/export/open for ZBrushCore, Substance Painter, iClone, Daz3D.
 
 # Installation
 
-Download either the tar.gz or zip from [https://github.com/Digiography/blender_addon_pipeline/releases/latest](https://github.com/Digiography/blender_addon_pipeline/releases/latest)
+Download either the tar.gz or zip from [https://github.com/Digiography/blender_addon_substance_painter/releases/latest](https://github.com/Digiography/blender_addon_substance_painter/releases/latest)
 
 Installing an Addon in Blender
 
