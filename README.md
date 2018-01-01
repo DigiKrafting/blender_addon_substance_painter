@@ -4,19 +4,29 @@ Pipeline/Workflow import/export for Substance Painter.
 
 # Features
 
-- One Click Substance Painter Object Export (Exports selected object to export folder and opens file in Substance Painter)
-- One Click Import of created Textures for Object (Imports from set folder and creates Nodes using the Principled BSDF shader)
-- One Click Substance Painter Scene Export (Exports scene to export folder and opens file in Substance Painter)
-- One Click Import of created Textures for Scene (Imports from set folder and creates Nodes using the Principled BSDF shader)
-- Export in either FBX or OBJ
+- Export in either FBX or OBJ.
+- Exports to export folder and opens Substance Painter.
+- Creates SPP Project File "{mesh}.spp" or "{filename}.spp". 
+- Passes textures folder from preferences to Substance Painter.
+- Creates Nodes using the Principled BSDF shader.
+- Autosave before export option.
 
-\* Creates SPP Project File "filename.spp" and passes textures folder from preferences for export.
+## Selected Mesh
+
+- One Click Export 
+- One Click Textures Import 
+
+## Scene
+
+- One Click Export
+- One Click Textures Import
 
 # Required Blender Version
 
 2.79.0
 
-\* Will likely work in previous versions but untested.
+\* Mesh import/export will likely work in previous versions but untested. 
+\* Texture Import requires the Principled BSDF shader in 2.79.0+.
 
 # IMPORTANT USAGE NOTES 
 
@@ -38,6 +48,6 @@ Installing an Addon in Blender
 
 # Screenshots
 
-![alt](/screenshots/pipeline_prefs.png)
+![alt](/screenshots/sp_prefs.png)
 
-![alt](/screenshots/pipeline.png)
+![alt](/screenshots/sp.png)
