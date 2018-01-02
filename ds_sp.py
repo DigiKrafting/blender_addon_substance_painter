@@ -89,6 +89,7 @@ class ds_sp_pbr_nodes(bpy.types.Operator):
                     _file_Glossiness = ds_sp_get_texture_file(_textures_path,_obj_name,_material_name,'Glossiness',_texture_ext)
                     _file_Roughness = ds_sp_get_texture_file(_textures_path,_obj_name,_material_name,'Roughness',_texture_ext)
                     _file_Normal = ds_sp_get_texture_file(_textures_path,_obj_name,_material_name,'Normal',_texture_ext)
+                    _file_Emissive = ds_sp_get_texture_file(_textures_path,_obj_name,_material_name,'Emissive',_texture_ext)
 
                     if _file_Base_Color or _file_Diffuse:
 
@@ -108,16 +109,47 @@ class ds_sp_pbr_nodes(bpy.types.Operator):
                         # Output Material
 
                         _material_output = _nodes.new('ShaderNodeOutputMaterial')
-                        _material_output.location = 600,0
+
+                        if not _file_Emissive:
+                            _material_output.location = 600,0
+                        else:
+                            _material_output.location = 1200,0
+
                         _material_output.name='ds_pbr_output'
+
+                        if _file_Emissive:
+
+                            # Add Shader
+
+                            _node_add_shader=_nodes.new('ShaderNodeAddShader')
+                            _node_add_shader.location = 1000,0
+                            _material_links.new(_node_add_shader.outputs['Shader'], _material_output.inputs['Surface'])
+                            
+                            # Shader Emission
+                            
+                            _node_emission=_nodes.new('ShaderNodeEmission')
+                            _node_emission.location = 800,-100
+                            _material_links.new(_node_emission.outputs['Emission'], _node_add_shader.inputs[1])
+
+                            # Emissive
+                            
+                            node=_nodes.new('ShaderNodeTexImage')
+                            node.location = 600,-100
+                            node.color_space = 'NONE'
+                            node.name='ds_pbr_texture_emissive'
+                            _material_links.new(node.outputs['Color'], _node_emission.inputs['Color'])
+                            node.image = bpy.data.images.load(_file_Emissive)
 
                         # Shader
 
                         node_shader = _nodes.new('ShaderNodeBsdfPrincipled')
                         node_shader.location = 400,0
                         node_shader.name='ds_pbr_shader'
-                        
-                        _material_links.new(node_shader.outputs['BSDF'], _material_output.inputs['Surface'])
+
+                        if not _file_Emissive:
+                            _material_links.new(node_shader.outputs['BSDF'], _material_output.inputs['Surface'])
+                        else:
+                            _material_links.new(node_shader.outputs['BSDF'], _node_add_shader.inputs[0])
 
                         if _file_Ambient_occlusion:
 
@@ -369,6 +401,20 @@ class ds_sp_export_scene(bpy.types.Operator):
 
         return {'FINISHED'}
 
+class ds_sp_toggle(bpy.types.Operator):
+
+    bl_idname = "ds_sp.toggle"
+    bl_label = "SP"
+    bl_space_type = 'PROPERTIES'
+    bl_region_type = 'WINDOW'
+    def execute(self, context):
+
+        if not bpy.context.user_preferences.addons[__package__].preferences.option_show_sp_toggle_state:
+                bpy.context.user_preferences.addons[__package__].preferences.option_show_sp_toggle_state=True
+        else:
+                bpy.context.user_preferences.addons[__package__].preferences.option_show_sp_toggle_state=False
+        return {'FINISHED'}
+
 class ds_sp_menu(bpy.types.Menu):
 
     bl_label = " Substance Painter"
@@ -419,6 +465,7 @@ def ds_sp_toolbar_btn_import_scene(self, context):
 def ds_sp_toolbar_btn_import_sel(self, context):
 
     self.layout.operator(ds_sp_pbr_nodes.bl_idname, text='SP:Sel', icon="IMPORT").import_setting = 'selected'
+
 def register():
 
     from bpy.utils import register_class
@@ -430,6 +477,7 @@ def register():
 
     register_class(ds_sp_export_scene)
     register_class(ds_sp_export_sel)
+    register_class(ds_sp_toggle)
     
     register_class(ds_sp_pbr_nodes)
 
@@ -478,6 +526,7 @@ def unregister():
 
     unregister_class(ds_sp_export_scene)
     unregister_class(ds_sp_export_sel)
+    unregister_class(ds_sp_toggle)
 
     unregister_class(ds_sp_pbr_nodes)
 
