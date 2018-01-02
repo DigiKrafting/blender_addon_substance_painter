@@ -123,12 +123,14 @@ class ds_sp_pbr_nodes(bpy.types.Operator):
 
                             _node_add_shader=_nodes.new('ShaderNodeAddShader')
                             _node_add_shader.location = 1000,0
+                            _node_add_shader.name = 'ds_pbr_add_shader'
                             _material_links.new(_node_add_shader.outputs['Shader'], _material_output.inputs['Surface'])
                             
                             # Shader Emission
                             
                             _node_emission=_nodes.new('ShaderNodeEmission')
                             _node_emission.location = 800,-100
+                            _node_emission.name = 'ds_pbr_emission'
                             _material_links.new(_node_emission.outputs['Emission'], _node_add_shader.inputs[1])
 
                             # Emissive
