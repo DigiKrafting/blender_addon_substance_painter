@@ -19,11 +19,11 @@
 import bpy
 
 from subprocess import Popen
-from os import system, path, makedirs
+from os import system, path, makedirs, sep
 
 def ds_sp_get_export_path():
 
-    _export_path = bpy.path.abspath('//') + bpy.context.user_preferences.addons[__package__].preferences.option_export_folder + '\\'
+    _export_path = bpy.path.abspath('//') + bpy.context.user_preferences.addons[__package__].preferences.option_export_folder + sep
 
     if not path.exists(_export_path):
         makedirs(_export_path)
@@ -32,7 +32,7 @@ def ds_sp_get_export_path():
 
 def ds_sp_get_textures_path():
 
-    _textures_path = bpy.path.abspath('//') + bpy.context.user_preferences.addons[__package__].preferences.option_textures_folder + '\\'
+    _textures_path = bpy.path.abspath('//') + bpy.context.user_preferences.addons[__package__].preferences.option_textures_folder + sep
 
     if not path.exists(_textures_path):
         makedirs(_textures_path)
@@ -42,8 +42,12 @@ def ds_sp_get_textures_path():
 def ds_sp_get_texture_file(texture_path,mesh_name,mat_name,texture_name,texture_ext):
 
     if path.exists(texture_path+mesh_name+'_'+mat_name+'_'+texture_name+'.'+texture_ext):
+        if bpy.context.user_preferences.addons[__package__].preferences.option_relative:
+            texture_path=bpy.path.relpath(texture_path)+sep
         return texture_path+mesh_name+'_'+mat_name+'_'+texture_name+'.'+texture_ext
     elif path.exists(texture_path+mat_name+'_'+texture_name+'.'+texture_ext):
+        if bpy.context.user_preferences.addons[__package__].preferences.option_relative:
+            texture_path=bpy.path.relpath(texture_path)+sep
         return texture_path+mat_name+'_'+texture_name+'.'+texture_ext
 
 class ds_sp_pbr_nodes(bpy.types.Operator):
@@ -67,6 +71,7 @@ class ds_sp_pbr_nodes(bpy.types.Operator):
             _objects = {bpy.context.scene.objects.active}
         
         _textures_path = ds_sp_get_textures_path()
+           
         _texture_ext=bpy.context.user_preferences.addons[__package__].preferences.option_import_ext
 
         for _obj in _objects:

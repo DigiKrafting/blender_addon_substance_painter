@@ -20,7 +20,7 @@ bl_info = {
         "name": "Substance Painter",
         "description": "Substance Painter Tools",
         "author": "Digiography.Studio",
-        "version": (1, 0, 5),
+        "version": (1, 1, 0),
         "blender": (2, 79, 0),
         "location": "Info Toolbar, File -> Import, File -> Export",
         "wiki_url":    "https://github.com/Digiography/blender_addon_substance_painter/wiki",
@@ -78,7 +78,12 @@ class ds_sp_addon_prefs(bpy.types.AddonPreferences):
         option_show_sp_toggle_state = bpy.props.BoolProperty(
                 name="SP Toggle Button State",
                 default=False,
-        )          
+        )
+        option_relative = bpy.props.BoolProperty(
+                name="Relative Paths",
+                description="Use Relative Paths for images.",
+                default = True
+        )        
         def draw(self, context):
 
                 layout = self.layout
@@ -91,6 +96,7 @@ class ds_sp_addon_prefs(bpy.types.AddonPreferences):
                 box=layout.box()
                 box.prop(self, 'option_export_folder')
                 box.prop(self, 'option_textures_folder')
+                box.prop(self, 'option_relative')
                 box.label('Automatically created as a sub folder relative to the saved .blend file. * Do NOT include any "\\".',icon='INFO')
                 box.prop(self, 'option_save_before_export')
 
