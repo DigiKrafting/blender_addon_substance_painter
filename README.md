@@ -10,6 +10,7 @@ Pipeline/Workflow import/export for Substance Painter.
 - Passes textures folder from preferences to Substance Painter.
 - Creates Nodes using the Principled BSDF shader.
 - Autosave before export option.
+- Use Relative Paths option.
 
 ## Selected Mesh
 
