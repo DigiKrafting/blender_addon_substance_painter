@@ -54,6 +54,7 @@ class ds_sp_pbr_nodes(bpy.types.Operator):
 
     bl_idname = "ds_sp.pbr_nodes"
     bl_label = "Import Textures"
+    bl_context = "material"
     
     import_setting = bpy.props.StringProperty(
         name="import_setting",
@@ -97,6 +98,10 @@ class ds_sp_pbr_nodes(bpy.types.Operator):
                     _file_Emissive = ds_sp_get_texture_file(_textures_path,_obj_name,_material_name,'Emissive',_texture_ext)
 
                     if _file_Base_Color or _file_Diffuse:
+                        
+                        if _material:
+                            
+                            _material.use_nodes = True
 
                         # Clear Nodes
 

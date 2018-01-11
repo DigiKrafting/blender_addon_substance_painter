@@ -22,11 +22,11 @@ Pipeline/Workflow import/export for Substance Painter.
 - One Click Export
 - One Click Textures Import
 
-# Required Blender Version
+# Min Required Blender Version
 
 2.79.0
 
-\* Mesh import/export will likely work in previous versions but untested. 
+\* Mesh Export will likely work in previous versions but untested. 
 \* Texture Import requires the Principled BSDF shader in 2.79.0+.
 
 # IMPORTANT USAGE NOTES 

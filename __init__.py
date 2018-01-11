@@ -20,7 +20,7 @@ bl_info = {
         "name": "Substance Painter",
         "description": "Substance Painter Tools",
         "author": "Digiography.Studio",
-        "version": (1, 1, 0),
+        "version": (1, 2, 0),
         "blender": (2, 79, 0),
         "location": "Info Toolbar, File -> Import, File -> Export",
         "wiki_url":    "https://github.com/Digiography/blender_addon_substance_painter/wiki",
