@@ -332,7 +332,7 @@ def ds_sp_obj_export_sel(self, context):
     if not bpy.context.user_preferences.addons[__package__].preferences.option_save_before_export:
         bpy.ops.wm.save_mainfile()
     
-    bpy.ops.export_scene.obj(filepath=_export_file, use_selection=True, axis_forward='-Z', axis_up='Y', global_scale=1.0, keep_vertex_order=True)
+    bpy.ops.export_scene.obj(filepath=_export_file, check_existing=False, use_selection=True, axis_forward='-Z', axis_up='Y', global_scale=1.0, keep_vertex_order=True)
 
     return _export_file
 
@@ -356,7 +356,7 @@ def ds_sp_obj_export_scene(self, context):
     if not bpy.context.user_preferences.addons[__package__].preferences.option_save_before_export:
         bpy.ops.wm.save_mainfile()
     
-    bpy.ops.export_scene.obj(filepath=_export_file, use_selection=False, axis_forward='-Z', axis_up='Y', global_scale=1.0, keep_vertex_order=True)
+    bpy.ops.export_scene.obj(filepath=_export_file, check_existing=False, use_selection=False, axis_forward='-Z', axis_up='Y', global_scale=1.0, keep_vertex_order=True)
 
     return _export_file
 
@@ -388,7 +388,7 @@ class ds_sp_export_sel(bpy.types.Operator):
         elif bpy.context.user_preferences.addons[__package__].preferences.option_export_type=='fbx':
             _export_file = ds_sp_fbx_export_sel(self, context)
 
-        Popen([bpy.context.user_preferences.addons[__package__].preferences.option_sp_exe, "--disable-version-checking", "--mesh", _export_file, "--export-path", _textures_path, _export_project])
+        Popen('"' + bpy.context.user_preferences.addons[__package__].preferences.option_sp_exe + '" --disable-version-checking --mesh "' + _export_file + '" --export-path "' + _textures_path + '" "' + _export_project + '"')
 
         return {'FINISHED'}
 
