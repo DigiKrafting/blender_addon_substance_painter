@@ -25,7 +25,7 @@ bl_info = {
         "location": "Info Toolbar, File -> Import, File -> Export",
         "wiki_url":    "https://github.com/Digiography/blender_addon_substance_painter/wiki",
         "tracker_url": "https://github.com/Digiography/blender_addon_substance_painter/issues",
-        "category": "System",
+        "category": "Import-Export",
 }
 
 import bpy
