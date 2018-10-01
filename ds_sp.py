@@ -388,7 +388,16 @@ class ds_sp_export_sel(bpy.types.Operator):
         elif bpy.context.user_preferences.addons[__package__].preferences.option_export_type=='fbx':
             _export_file = ds_sp_fbx_export_sel(self, context)
 
-        Popen('"' + bpy.context.user_preferences.addons[__package__].preferences.option_sp_exe + '" --disable-version-checking --mesh "' + _export_file + '" --export-path "' + _textures_path + '" "' + _export_project + '"')
+        if bpy.context.user_preferences.addons[__package__].preferences.option_no_new:
+
+            if not path.exists(_export_project):
+                Popen([bpy.context.user_preferences.addons[__package__].preferences.option_sp_exe, "--disable-version-checking", "--mesh", _export_file, "--export-path", _textures_path])
+            else:
+                Popen([bpy.context.user_preferences.addons[__package__].preferences.option_sp_exe, "--disable-version-checking", "--mesh", _export_file, "--export-path", _textures_path, _export_project])
+
+        else:
+
+            Popen([bpy.context.user_preferences.addons[__package__].preferences.option_sp_exe, "--disable-version-checking", "--mesh", _export_file, "--export-path", _textures_path, _export_project])
 
         return {'FINISHED'}
 
@@ -409,8 +418,16 @@ class ds_sp_export_scene(bpy.types.Operator):
         elif bpy.context.user_preferences.addons[__package__].preferences.option_export_type=='fbx':
             _export_file = ds_sp_fbx_export_scene(self, context)
 
-        #Popen([bpy.context.user_preferences.addons[__package__].preferences.option_sp_exe, "--disable-version-checking", "--mesh", _export_file, "--export-path", _textures_path, _export_project])
-        Popen('"' + bpy.context.user_preferences.addons[__package__].preferences.option_sp_exe + '" --disable-version-checking --mesh "' + _export_file + '" --export-path "' + _textures_path + '" "' + _export_project + '"')
+        if bpy.context.user_preferences.addons[__package__].preferences.option_no_new:
+
+            if not path.exists(_export_project):
+                Popen([bpy.context.user_preferences.addons[__package__].preferences.option_sp_exe, "--disable-version-checking", "--mesh", _export_file, "--export-path", _textures_path])
+            else:
+                Popen([bpy.context.user_preferences.addons[__package__].preferences.option_sp_exe, "--disable-version-checking", "--mesh", _export_file, "--export-path", _textures_path, _export_project])
+
+        else:
+            
+            Popen([bpy.context.user_preferences.addons[__package__].preferences.option_sp_exe, "--disable-version-checking", "--mesh", _export_file, "--export-path", _textures_path, _export_project])
 
         return {'FINISHED'}
 

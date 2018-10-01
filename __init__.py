@@ -20,7 +20,7 @@ bl_info = {
         "name": "Substance Painter",
         "description": "Substance Painter Tools",
         "author": "Digiography.Studio",
-        "version": (1, 3, 0),
+        "version": (1, 4, 0),
         "blender": (2, 79, 0),
         "location": "Info Toolbar, File -> Import, File -> Export",
         "wiki_url":    "https://github.com/Digiography/blender_addon_substance_painter/wiki",
@@ -83,7 +83,12 @@ class ds_sp_addon_prefs(bpy.types.AddonPreferences):
                 name="Relative Paths",
                 description="Use Relative Paths for images.",
                 default = True
-        )        
+        )  
+        option_no_new = bpy.props.BoolProperty(
+                name="2018.0.1+ Project File Fix",
+                description="Exclude from path for SP 2018.0.1+ to avoid it being added to the textures path.",
+                default = False
+        )                  
         def draw(self, context):
 
                 layout = self.layout
@@ -97,6 +102,8 @@ class ds_sp_addon_prefs(bpy.types.AddonPreferences):
                 box.prop(self, 'option_export_folder')
                 box.prop(self, 'option_textures_folder')
                 box.prop(self, 'option_relative')
+                box.prop(self, 'option_no_new')
+                
                 box.label('Automatically created as a sub folder relative to the saved .blend file. * Do NOT include any "\\".',icon='INFO')
                 box.prop(self, 'option_save_before_export')
 
