@@ -20,8 +20,8 @@ bl_info = {
         "name": "Substance Painter",
         "description": "Substance Painter Tools",
         "author": "Digiography.Studio",
-        "version": (1, 4, 0),
-        "blender": (2, 79, 0),
+        "version": (1, 5, 0),
+        "blender": (2, 80, 0),
         "location": "Info Toolbar, File -> Import, File -> Export",
         "wiki_url":    "https://github.com/Digiography/blender_addon_substance_painter/wiki",
         "tracker_url": "https://github.com/Digiography/blender_addon_substance_painter/issues",
@@ -36,57 +36,54 @@ class ds_sp_addon_prefs(bpy.types.AddonPreferences):
 
         bl_idname = __package__
  
-        option_sp_exe = bpy.props.StringProperty(
+        option_sp_exe : bpy.props.StringProperty(
                 name="Substance Executable",
                 subtype='FILE_PATH',
                 default="C:\Program Files\Allegorithmic\Substance Painter\Substance Painter.exe",
         )
-        option_export_folder = bpy.props.StringProperty(
+        option_export_folder : bpy.props.StringProperty(
                 name="Export Folder Name",
                 default="eXport",
         )     
-        option_textures_folder = bpy.props.StringProperty(
+        option_textures_folder : bpy.props.StringProperty(
                 name="Textures Folder Name",
                 default="Textures",
         )      
-        option_save_before_export = bpy.props.BoolProperty(
+        option_save_before_export : bpy.props.BoolProperty(
                 name="Save Before Export",
                 default=True,
         )     
-        options_display_types = [('Buttons', "Buttons", "Buttons"),('Menu', "Menu", "Menu"),('Hide', "Hide", "Hide"),]        
-        option_display_type = bpy.props.EnumProperty(
-                items=options_display_types,
+        option_display_type : bpy.props.EnumProperty(
+                items=[('Buttons', "Buttons", "Buttons"),('Menu', "Menu", "Menu"),('Hide', "Hide", "Hide"),],
                 name="Display Type",
                 default='Buttons',
         )
-        options_export_type = [('obj', "obj", "obj"),('fbx', "fbx", "fbx"),]        
-        option_export_type = bpy.props.EnumProperty(
-                items=options_export_type,
+        option_export_type : bpy.props.EnumProperty(
+                items=[('obj', "obj", "obj"),('fbx', "fbx", "fbx"),],
                 name="Export Type",
                 default='obj',
         )    
-        options_import_ext = [('png', "png", "png"),('jpeg', "jpeg", "jpeg"),('tiff', "tiff", "tiff"),]        
-        option_import_ext = bpy.props.EnumProperty(
-                items=options_import_ext,
+        option_import_ext : bpy.props.EnumProperty(
+                items=[('png', "png", "png"),('jpeg', "jpeg", "jpeg"),('tiff', "tiff", "tiff"),],
                 name="Import Extension",
                 default='png',
         )
-        option_show_sp_toggle = bpy.props.BoolProperty(
+        option_show_sp_toggle : bpy.props.BoolProperty(
                 name="SP Toggle",
                 default=True,
         )
-        option_show_sp_toggle_state = bpy.props.BoolProperty(
+        option_show_sp_toggle_state : bpy.props.BoolProperty(
                 name="SP Toggle Button State",
                 default=False,
         )
-        option_relative = bpy.props.BoolProperty(
+        option_relative : bpy.props.BoolProperty(
                 name="Relative Paths",
                 description="Use Relative Paths for images.",
                 default = True
         )  
-        option_no_new = bpy.props.BoolProperty(
+        option_no_new : bpy.props.BoolProperty(
                 name="2018.0.1+ Project File Fix",
-                description="Exclude from path for SP 2018.0.1+ to avoid it being added to the textures path.",
+                description="Exclude from path for SP 2018.0.1-2018.3.0 to avoid it being added to the textures path.",
                 default = False
         )                  
         def draw(self, context):
@@ -101,10 +98,9 @@ class ds_sp_addon_prefs(bpy.types.AddonPreferences):
                 box=layout.box()
                 box.prop(self, 'option_export_folder')
                 box.prop(self, 'option_textures_folder')
+                box.label(text='Automatically created as a sub folder relative to the saved .blend file. * Do NOT include any "\\".',icon='INFO')
                 box.prop(self, 'option_relative')
                 box.prop(self, 'option_no_new')
-                
-                box.label('Automatically created as a sub folder relative to the saved .blend file. * Do NOT include any "\\".',icon='INFO')
                 box.prop(self, 'option_save_before_export')
 
 class ds_sp_prefs_open(bpy.types.Operator):

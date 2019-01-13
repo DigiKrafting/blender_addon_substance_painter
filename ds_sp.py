@@ -23,7 +23,7 @@ from os import system, path, makedirs, sep
 
 def ds_sp_get_export_path():
 
-    _export_path = bpy.path.abspath('//') + bpy.context.user_preferences.addons[__package__].preferences.option_export_folder + sep
+    _export_path = bpy.path.abspath('//') + bpy.context.preferences.addons[__package__].preferences.option_export_folder + sep
 
     if not path.exists(_export_path):
         makedirs(_export_path)
@@ -32,7 +32,7 @@ def ds_sp_get_export_path():
 
 def ds_sp_get_textures_path():
 
-    _textures_path = bpy.path.abspath('//') + bpy.context.user_preferences.addons[__package__].preferences.option_textures_folder + sep
+    _textures_path = bpy.path.abspath('//') + bpy.context.preferences.addons[__package__].preferences.option_textures_folder + sep
 
     if not path.exists(_textures_path):
         makedirs(_textures_path)
@@ -42,21 +42,24 @@ def ds_sp_get_textures_path():
 def ds_sp_get_texture_file(texture_path,mesh_name,mat_name,texture_name,texture_ext):
 
     if path.exists(texture_path+mesh_name+'_'+mat_name+'_'+texture_name+'.'+texture_ext):
-        if bpy.context.user_preferences.addons[__package__].preferences.option_relative:
+        if bpy.context.preferences.addons[__package__].preferences.option_relative:
             texture_path=bpy.path.relpath(texture_path)+sep
         return texture_path+mesh_name+'_'+mat_name+'_'+texture_name+'.'+texture_ext
     elif path.exists(texture_path+mat_name+'_'+texture_name+'.'+texture_ext):
-        if bpy.context.user_preferences.addons[__package__].preferences.option_relative:
+        if bpy.context.preferences.addons[__package__].preferences.option_relative:
             texture_path=bpy.path.relpath(texture_path)+sep
         return texture_path+mat_name+'_'+texture_name+'.'+texture_ext
+    else:
+        return ""
 
 class ds_sp_pbr_nodes(bpy.types.Operator):
 
     bl_idname = "ds_sp.pbr_nodes"
     bl_label = "Import Textures"
     bl_context = "material"
-    
-    import_setting = bpy.props.StringProperty(
+    bl_description = "Import from Substance Painter"
+
+    import_setting : bpy.props.StringProperty(
         name="import_setting",
         default = 'scene'
     )
@@ -67,13 +70,13 @@ class ds_sp_pbr_nodes(bpy.types.Operator):
 
             _objects = bpy.context.scene.objects
 
-        elif bpy.context.scene.objects.active:
+        elif bpy.context.active_object:
 
-            _objects = {bpy.context.scene.objects.active}
+            _objects = {bpy.context.active_object}
         
         _textures_path = ds_sp_get_textures_path()
            
-        _texture_ext=bpy.context.user_preferences.addons[__package__].preferences.option_import_ext
+        _texture_ext=bpy.context.preferences.addons[__package__].preferences.option_import_ext
 
         for _obj in _objects:
 
@@ -94,7 +97,12 @@ class ds_sp_pbr_nodes(bpy.types.Operator):
                     _file_Specular = ds_sp_get_texture_file(_textures_path,_obj_name,_material_name,'Specular',_texture_ext)
                     _file_Glossiness = ds_sp_get_texture_file(_textures_path,_obj_name,_material_name,'Glossiness',_texture_ext)
                     _file_Roughness = ds_sp_get_texture_file(_textures_path,_obj_name,_material_name,'Roughness',_texture_ext)
-                    _file_Normal = ds_sp_get_texture_file(_textures_path,_obj_name,_material_name,'Normal',_texture_ext)
+
+                    _file_Normal = ds_sp_get_texture_file(_textures_path,_obj_name,_material_name,'Normal_OpenGL',_texture_ext)
+
+                    if _file_Normal=="":
+                        _file_Normal = ds_sp_get_texture_file(_textures_path,_obj_name,_material_name,'Normal',_texture_ext)
+
                     _file_Emissive = ds_sp_get_texture_file(_textures_path,_obj_name,_material_name,'Emissive',_texture_ext)
 
                     if _file_Base_Color or _file_Diffuse:
@@ -281,7 +289,7 @@ def ds_sp_fbx_export_sel(self, context):
     _export_path = ds_sp_get_export_path()
     _export_file = _export_path + _export_name + '.fbx'
 
-    if not bpy.context.user_preferences.addons[__package__].preferences.option_save_before_export:
+    if not bpy.context.preferences.addons[__package__].preferences.option_save_before_export:
         bpy.ops.wm.save_mainfile()
 
     bpy.ops.export_scene.fbx(filepath=_export_file, use_selection=True, check_existing=False, axis_forward='-Z', axis_up='Y', filter_glob="*.fbx", version='BIN7400', ui_tab='MAIN', global_scale=1.0, apply_unit_scale=True, bake_space_transform=False, object_types={'ARMATURE', 'MESH'}, use_mesh_modifiers=True, mesh_smooth_type='OFF', use_mesh_edges=False, use_tspace=False, use_custom_props=False, add_leaf_bones=False, primary_bone_axis='Y', secondary_bone_axis='X', use_armature_deform_only=False, bake_anim=True, bake_anim_use_all_bones=True, bake_anim_use_nla_strips=True, bake_anim_use_all_actions=True, bake_anim_force_startend_keying=True, bake_anim_step=1.0, bake_anim_simplify_factor=1.0, use_anim=True, use_anim_action_all=True, use_default_take=True, use_anim_optimize=True, anim_optimize_precision=6.0, path_mode='AUTO', embed_textures=False, batch_mode='OFF', use_batch_own_dir=True, use_metadata=True)
@@ -305,7 +313,7 @@ def ds_sp_fbx_export_scene(self, context):
     _export_path = ds_sp_get_export_path()
     _export_file = _export_path + _export_name + '.fbx'
 
-    if not bpy.context.user_preferences.addons[__package__].preferences.option_save_before_export:
+    if not bpy.context.preferences.addons[__package__].preferences.option_save_before_export:
         bpy.ops.wm.save_mainfile()
 
     bpy.ops.export_scene.fbx(filepath=_export_file, use_selection=False, check_existing=False, axis_forward='-Z', axis_up='Y', filter_glob="*.fbx", version='BIN7400', ui_tab='MAIN', global_scale=1.0, apply_unit_scale=True, bake_space_transform=False, object_types={'ARMATURE', 'MESH'}, use_mesh_modifiers=True, mesh_smooth_type='OFF', use_mesh_edges=False, use_tspace=False, use_custom_props=False, add_leaf_bones=False, primary_bone_axis='Y', secondary_bone_axis='X', use_armature_deform_only=False, bake_anim=True, bake_anim_use_all_bones=True, bake_anim_use_nla_strips=True, bake_anim_use_all_actions=True, bake_anim_force_startend_keying=True, bake_anim_step=1.0, bake_anim_simplify_factor=1.0, use_anim=True, use_anim_action_all=True, use_default_take=True, use_anim_optimize=True, anim_optimize_precision=6.0, path_mode='AUTO', embed_textures=False, batch_mode='OFF', use_batch_own_dir=True, use_metadata=True)
@@ -325,11 +333,11 @@ class ds_sp_fbx_export_scene_execute(bpy.types.Operator):
 
 def ds_sp_obj_export_sel(self, context):
 
-    _export_name = bpy.context.scene.objects.active.name
+    _export_name = bpy.context.active_object.name
     _export_path = ds_sp_get_export_path()
     _export_file = _export_path + _export_name + '.obj'
 
-    if not bpy.context.user_preferences.addons[__package__].preferences.option_save_before_export:
+    if not bpy.context.preferences.addons[__package__].preferences.option_save_before_export:
         bpy.ops.wm.save_mainfile()
     
     bpy.ops.export_scene.obj(filepath=_export_file, check_existing=False, use_selection=True, axis_forward='-Z', axis_up='Y', global_scale=1.0, keep_vertex_order=True)
@@ -353,7 +361,7 @@ def ds_sp_obj_export_scene(self, context):
     _export_path = ds_sp_get_export_path()
     _export_file = _export_path + _export_name + '.obj'
 
-    if not bpy.context.user_preferences.addons[__package__].preferences.option_save_before_export:
+    if not bpy.context.preferences.addons[__package__].preferences.option_save_before_export:
         bpy.ops.wm.save_mainfile()
     
     bpy.ops.export_scene.obj(filepath=_export_file, check_existing=False, use_selection=False, axis_forward='-Z', axis_up='Y', global_scale=1.0, keep_vertex_order=True)
@@ -375,29 +383,30 @@ class ds_sp_export_sel(bpy.types.Operator):
 
     bl_idname = "ds_sp.export_sel" 
     bl_label = "Substance Painter (Selected)"
+    bl_description = "Export to Substance Painter (Selected)"
 
     def execute(self, context):
 
-        _object_name = bpy.context.scene.objects.active.name
+        _object_name = bpy.context.active_object.name
         _export_path = bpy.path.abspath('//')
         _export_project = _export_path + _object_name + '.spp'
         _textures_path = ds_sp_get_textures_path()
 
-        if bpy.context.user_preferences.addons[__package__].preferences.option_export_type=='obj':
+        if bpy.context.preferences.addons[__package__].preferences.option_export_type=='obj':
             _export_file = ds_sp_obj_export_sel(self, context)
-        elif bpy.context.user_preferences.addons[__package__].preferences.option_export_type=='fbx':
+        elif bpy.context.preferences.addons[__package__].preferences.option_export_type=='fbx':
             _export_file = ds_sp_fbx_export_sel(self, context)
 
-        if bpy.context.user_preferences.addons[__package__].preferences.option_no_new:
+        if bpy.context.preferences.addons[__package__].preferences.option_no_new:
 
             if not path.exists(_export_project):
-                Popen([bpy.context.user_preferences.addons[__package__].preferences.option_sp_exe, "--disable-version-checking", "--mesh", _export_file, "--export-path", _textures_path])
+                Popen([bpy.context.preferences.addons[__package__].preferences.option_sp_exe, "--disable-version-checking", "--mesh", _export_file, "--export-path", _textures_path])
             else:
-                Popen([bpy.context.user_preferences.addons[__package__].preferences.option_sp_exe, "--disable-version-checking", "--mesh", _export_file, "--export-path", _textures_path, _export_project])
+                Popen([bpy.context.preferences.addons[__package__].preferences.option_sp_exe, "--disable-version-checking", "--mesh", _export_file, "--export-path", _textures_path, _export_project])
 
         else:
 
-            Popen([bpy.context.user_preferences.addons[__package__].preferences.option_sp_exe, "--disable-version-checking", "--mesh", _export_file, "--export-path", _textures_path, _export_project])
+            Popen([bpy.context.preferences.addons[__package__].preferences.option_sp_exe, "--disable-version-checking", "--mesh", _export_file, "--export-path", _textures_path, _export_project])
 
         return {'FINISHED'}
 
@@ -405,6 +414,7 @@ class ds_sp_export_scene(bpy.types.Operator):
 
     bl_idname = "ds_sp.export_scene" 
     bl_label = "Substance Painter (Scene)"
+    bl_description = "Export to Substance Painter (Scene)"
 
     def execute(self, context):
 
@@ -413,21 +423,21 @@ class ds_sp_export_scene(bpy.types.Operator):
         _export_project = _export_path + _export_name + '.spp'
         _textures_path = ds_sp_get_textures_path()
 
-        if bpy.context.user_preferences.addons[__package__].preferences.option_export_type=='obj':
+        if bpy.context.preferences.addons[__package__].preferences.option_export_type=='obj':
             _export_file = ds_sp_obj_export_scene(self, context)
-        elif bpy.context.user_preferences.addons[__package__].preferences.option_export_type=='fbx':
+        elif bpy.context.preferences.addons[__package__].preferences.option_export_type=='fbx':
             _export_file = ds_sp_fbx_export_scene(self, context)
 
-        if bpy.context.user_preferences.addons[__package__].preferences.option_no_new:
+        if bpy.context.preferences.addons[__package__].preferences.option_no_new:
 
             if not path.exists(_export_project):
-                Popen([bpy.context.user_preferences.addons[__package__].preferences.option_sp_exe, "--disable-version-checking", "--mesh", _export_file, "--export-path", _textures_path])
+                Popen([bpy.context.preferences.addons[__package__].preferences.option_sp_exe, "--disable-version-checking", "--mesh", _export_file, "--export-path", _textures_path])
             else:
-                Popen([bpy.context.user_preferences.addons[__package__].preferences.option_sp_exe, "--disable-version-checking", "--mesh", _export_file, "--export-path", _textures_path, _export_project])
+                Popen([bpy.context.preferences.addons[__package__].preferences.option_sp_exe, "--disable-version-checking", "--mesh", _export_file, "--export-path", _textures_path, _export_project])
 
         else:
             
-            Popen([bpy.context.user_preferences.addons[__package__].preferences.option_sp_exe, "--disable-version-checking", "--mesh", _export_file, "--export-path", _textures_path, _export_project])
+            Popen([bpy.context.preferences.addons[__package__].preferences.option_sp_exe, "--disable-version-checking", "--mesh", _export_file, "--export-path", _textures_path, _export_project])
 
         return {'FINISHED'}
 
@@ -439,10 +449,10 @@ class ds_sp_toggle(bpy.types.Operator):
     bl_region_type = 'WINDOW'
     def execute(self, context):
 
-        if not bpy.context.user_preferences.addons[__package__].preferences.option_show_sp_toggle_state:
-                bpy.context.user_preferences.addons[__package__].preferences.option_show_sp_toggle_state=True
+        if not bpy.context.preferences.addons[__package__].preferences.option_show_sp_toggle_state:
+                bpy.context.preferences.addons[__package__].preferences.option_show_sp_toggle_state=True
         else:
-                bpy.context.user_preferences.addons[__package__].preferences.option_show_sp_toggle_state=False
+                bpy.context.preferences.addons[__package__].preferences.option_show_sp_toggle_state=False
         return {'FINISHED'}
 
 class ds_sp_menu(bpy.types.Menu):
@@ -455,14 +465,14 @@ class ds_sp_menu(bpy.types.Menu):
         layout = self.layout
 
         self.layout.operator(ds_sp_export_scene.bl_idname,icon="EXPORT")
-        self.layout.operator(ds_sp_pbr_nodes.bl_idname, text='Import Textures (Scene)', icon="IMPORT").import_setting = 'scene'
+        self.layout.operator(ds_sp_pbr_nodes.bl_idname, text='Substance Painter (Scene)', icon="IMPORT").import_setting = 'scene'
 
         self.layout.operator(ds_sp_export_sel.bl_idname,icon="EXPORT")
-        self.layout.operator(ds_sp_pbr_nodes.bl_idname, text='Import Textures (Selected)', icon="IMPORT").import_setting = 'selected'
+        self.layout.operator(ds_sp_pbr_nodes.bl_idname, text='Substance Painter (Selected)', icon="IMPORT").import_setting = 'selected'
 
 def ds_sp_draw_menu(self, context):
 
-        self.layout.menu(ds_sp_menu.bl_idname,icon="COLLAPSEMENU")
+    self.layout.menu(ds_sp_menu.bl_idname)
 
 def ds_sp_menu_func_export_scene(self, context):
 
@@ -474,89 +484,72 @@ def ds_sp_menu_func_export_sel(self, context):
 
 def ds_sp_menu_func_import_scene(self, context):
 
-    self.layout.operator(ds_sp_pbr_nodes.bl_idname, text='Import Textures (Scene)').import_setting = 'scene'
+    self.layout.operator(ds_sp_pbr_nodes.bl_idname, text='Substance Painter (Scene)').import_setting = 'scene'
 
 def ds_sp_menu_func_import_sel(self, context):
 
-    self.layout.operator(ds_sp_pbr_nodes.bl_idname, text='Import Textures (Selected)').import_setting = 'selected'
+    self.layout.operator(ds_sp_pbr_nodes.bl_idname, text='Substance Painter (Selected)').import_setting = 'selected'
 
-def ds_sp_toolbar_btn_export_scene(self, context):
+def ds_sp_draw_btns(self, context):
+    
+    if context.region.alignment != 'RIGHT':
 
-    self.layout.operator(ds_sp_export_scene.bl_idname,text="SP:Scene",icon="EXPORT")
+        layout = self.layout
+        row = layout.row(align=True)
 
-def ds_sp_toolbar_btn_export_sel(self, context):
+        row.operator(ds_sp_export_scene.bl_idname,text="SP:Scene",icon="EXPORT")
+        row.operator(ds_sp_pbr_nodes.bl_idname, text='SP:Scene',icon="IMPORT").import_setting = 'scene'
 
-    self.layout.operator(ds_sp_export_sel.bl_idname,text="SP:Sel",icon="EXPORT")
+        row.operator(ds_sp_export_sel.bl_idname,text="SP:Sel",icon="EXPORT")
+        row.operator(ds_sp_pbr_nodes.bl_idname, text='SP:Sel', icon="IMPORT").import_setting = 'selected'
 
-def ds_sp_toolbar_btn_import_scene(self, context):
-
-    self.layout.operator(ds_sp_pbr_nodes.bl_idname, text='SP:Scene',icon="IMPORT").import_setting = 'scene'
-
-def ds_sp_toolbar_btn_import_sel(self, context):
-
-    self.layout.operator(ds_sp_pbr_nodes.bl_idname, text='SP:Sel', icon="IMPORT").import_setting = 'selected'
+classes = (
+    ds_sp_fbx_export_sel_execute,
+    ds_sp_fbx_export_scene_execute,
+    ds_sp_obj_export_sel_execute,
+    ds_sp_obj_export_scene_execute,
+    ds_sp_export_scene,
+    ds_sp_export_sel,
+    ds_sp_toggle,
+    ds_sp_pbr_nodes,
+)
 
 def register():
 
     from bpy.utils import register_class
+    for cls in classes:
+        register_class(cls)
 
-    register_class(ds_sp_fbx_export_sel_execute)
-    register_class(ds_sp_fbx_export_scene_execute)
-    register_class(ds_sp_obj_export_sel_execute)
-    register_class(ds_sp_obj_export_scene_execute)
+    bpy.types.TOPBAR_MT_file_export.append(ds_sp_menu_func_export_scene)
+    bpy.types.TOPBAR_MT_file_import.append(ds_sp_menu_func_import_scene)
+    bpy.types.TOPBAR_MT_file_export.append(ds_sp_menu_func_export_sel)
+    bpy.types.TOPBAR_MT_file_import.append(ds_sp_menu_func_import_sel)
 
-    register_class(ds_sp_export_scene)
-    register_class(ds_sp_export_sel)
-    register_class(ds_sp_toggle)
-    
-    register_class(ds_sp_pbr_nodes)
+    if bpy.context.preferences.addons[__package__].preferences.option_display_type=='Buttons':
 
-    bpy.types.INFO_MT_file_export.append(ds_sp_menu_func_export_scene)
-    bpy.types.INFO_MT_file_import.append(ds_sp_menu_func_import_scene)
-    bpy.types.INFO_MT_file_export.append(ds_sp_menu_func_export_sel)
-    bpy.types.INFO_MT_file_import.append(ds_sp_menu_func_import_sel)
+        bpy.types.TOPBAR_HT_upper_bar.append(ds_sp_draw_btns)
 
-    if bpy.context.user_preferences.addons[__package__].preferences.option_display_type=='Buttons':
-
-        bpy.types.INFO_HT_header.append(ds_sp_toolbar_btn_export_scene)
-        bpy.types.INFO_HT_header.append(ds_sp_toolbar_btn_import_scene)
-        bpy.types.INFO_HT_header.append(ds_sp_toolbar_btn_export_sel)
-        bpy.types.INFO_HT_header.append(ds_sp_toolbar_btn_import_sel)
-
-    elif bpy.context.user_preferences.addons[__package__].preferences.option_display_type=='Menu':
+    elif bpy.context.preferences.addons[__package__].preferences.option_display_type=='Menu':
 
         register_class(ds_sp_menu)
-        bpy.types.INFO_HT_header.append(ds_sp_draw_menu)
+        bpy.types.TOPBAR_MT_editor_menus.append(ds_sp_draw_menu)
 
 def unregister():
 
+    bpy.types.TOPBAR_MT_file_export.remove(ds_sp_menu_func_export_scene)
+    bpy.types.TOPBAR_MT_file_import.remove(ds_sp_menu_func_import_scene)
+    bpy.types.TOPBAR_MT_file_export.remove(ds_sp_menu_func_export_sel)
+    bpy.types.TOPBAR_MT_file_import.remove(ds_sp_menu_func_import_sel)
+
+    if bpy.context.preferences.addons[__package__].preferences.option_display_type=='Buttons':
+        
+        bpy.types.TOPBAR_HT_upper_bar.remove(ds_sp_draw_btns)
+
+    elif bpy.context.preferences.addons[__package__].preferences.option_display_type=='Menu':
+
+        register_class(ds_sp_menu)
+        bpy.types.TOPBAR_MT_editor_menus.remove(ds_sp_draw_menu)
+
     from bpy.utils import unregister_class
-
-    bpy.types.INFO_MT_file_export.remove(ds_sp_menu_func_export_scene)
-    bpy.types.INFO_MT_file_import.remove(ds_sp_menu_func_import_scene)
-    bpy.types.INFO_MT_file_export.remove(ds_sp_menu_func_export_sel)
-    bpy.types.INFO_MT_file_import.remove(ds_sp_menu_func_import_sel)
-
-    if bpy.context.user_preferences.addons[__package__].preferences.option_display_type=='Buttons':
-
-        bpy.types.INFO_HT_header.remove(ds_sp_toolbar_btn_export_scene)
-        bpy.types.INFO_HT_header.remove(ds_sp_toolbar_btn_import_scene)
-        bpy.types.INFO_HT_header.remove(ds_sp_toolbar_btn_export_sel)
-        bpy.types.INFO_HT_header.remove(ds_sp_toolbar_btn_import_sel)
-
-    elif bpy.context.user_preferences.addons[__package__].preferences.option_display_type=='Menu':
-
-        unregister_class(ds_sp_menu)
-        bpy.types.INFO_HT_header.remove(ds_sp_draw_menu)
-
-    unregister_class(ds_sp_fbx_export_sel_execute)
-    unregister_class(ds_sp_fbx_export_scene_execute)
-    unregister_class(ds_sp_obj_export_sel_execute)
-    unregister_class(ds_sp_obj_export_scene_execute)
-
-    unregister_class(ds_sp_export_scene)
-    unregister_class(ds_sp_export_sel)
-    unregister_class(ds_sp_toggle)
-
-    unregister_class(ds_sp_pbr_nodes)
-
+    for cls in reversed(classes):
+        unregister_class(cls)

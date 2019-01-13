@@ -2,11 +2,13 @@
 
 Pipeline/Workflow import/export for Substance Painter.
 
+\* Updated to Blender 2.80.0 Beta
+
 # Features
 
 - Export in either FBX or OBJ.
 - Exports to export folder and opens Substance Painter.
-- Creates SPP Project File "{mesh}.spp" or "{filename}.spp". * (Prior to 2018.1.0)
+- Creates SPP Project File "{mesh}.spp" or "{filename}.spp". * (Excludes 2018.1.0-2018.3.0)
 - Passes textures folder from preferences to Substance Painter.
 - Creates Nodes using the Principled BSDF shader.
 - Autosave before export option.
@@ -24,10 +26,12 @@ Pipeline/Workflow import/export for Substance Painter.
 
 # Min Required Blender Version
 
-2.79.0
+2.79.0 (1.4.0)
 
 \* Mesh Export will likely work in previous versions but untested. 
 \* Texture Import requires the Principled BSDF shader in 2.79.0+.
+
+2.80.0 (1.5.0+)
 
 # IMPORTANT USAGE NOTES 
 
