@@ -39,6 +39,14 @@ def ds_sp_get_textures_path():
 
     return _textures_path
 
+def ds_sp_get_object_name():
+       
+    return bpy.context.active_object.name
+
+def ds_sp_get_file_name():
+       
+    return bpy.path.basename(bpy.context.blend_data.filepath).replace('.blend','')
+
 def ds_sp_get_texture_file(texture_path,mesh_name,mat_name,texture_name,texture_ext):
 
     if path.exists(texture_path+mesh_name+'_'+mat_name+'_'+texture_name+'.'+texture_ext):
@@ -285,7 +293,7 @@ class ds_sp_pbr_nodes(bpy.types.Operator):
 
 def ds_sp_fbx_export_sel(self, context):
 
-    _export_name = bpy.context.active_object.name
+    _export_name = ds_sp_get_object_name()
     _export_path = ds_sp_get_export_path()
     _export_file = _export_path + _export_name + '.fbx'
 
@@ -309,7 +317,7 @@ class ds_sp_fbx_export_sel_execute(bpy.types.Operator):
 
 def ds_sp_fbx_export_scene(self, context):
 
-    _export_name = bpy.path.basename(bpy.context.blend_data.filepath).replace('.blend','')
+    _export_name = ds_sp_get_file_name()
     _export_path = ds_sp_get_export_path()
     _export_file = _export_path + _export_name + '.fbx'
 
@@ -333,7 +341,7 @@ class ds_sp_fbx_export_scene_execute(bpy.types.Operator):
 
 def ds_sp_obj_export_sel(self, context):
 
-    _export_name = bpy.context.active_object.name
+    _export_name = ds_sp_get_object_name()
     _export_path = ds_sp_get_export_path()
     _export_file = _export_path + _export_name + '.obj'
 
@@ -357,7 +365,7 @@ class ds_sp_obj_export_sel_execute(bpy.types.Operator):
 
 def ds_sp_obj_export_scene(self, context):
 
-    _export_name = bpy.path.basename(bpy.context.blend_data.filepath).replace('.blend','')
+    _export_name = ds_sp_get_file_name()
     _export_path = ds_sp_get_export_path()
     _export_file = _export_path + _export_name + '.obj'
 
@@ -387,7 +395,7 @@ class ds_sp_export_sel(bpy.types.Operator):
 
     def execute(self, context):
 
-        _object_name = bpy.context.active_object.name
+        _object_name = ds_sp_get_object_name()
         _export_path = bpy.path.abspath('//')
         _export_project = _export_path + _object_name + '.spp'
         _textures_path = ds_sp_get_textures_path()
@@ -418,7 +426,7 @@ class ds_sp_export_scene(bpy.types.Operator):
 
     def execute(self, context):
 
-        _export_name = bpy.path.basename(bpy.context.blend_data.filepath).replace('.blend','')
+        _export_name = ds_sp_get_file_name()
         _export_path = bpy.path.abspath('//')
         _export_project = _export_path + _export_name + '.spp'
         _textures_path = ds_sp_get_textures_path()
