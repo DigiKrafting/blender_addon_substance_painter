@@ -285,7 +285,7 @@ class ds_sp_pbr_nodes(bpy.types.Operator):
 
 def ds_sp_fbx_export_sel(self, context):
 
-    _export_name = bpy.context.scene.objects.active.name
+    _export_name = bpy.context.active_object.name
     _export_path = ds_sp_get_export_path()
     _export_file = _export_path + _export_name + '.fbx'
 
