@@ -13,6 +13,7 @@ Pipeline/Workflow import/export for Substance Painter.
 - Creates Nodes using the Principled BSDF shader.
 - Autosave before export option.
 - Use Relative Paths option.
+- Creates nodes for Unreal Engine Textures. * (On detection of OcclusionRoughnessMetallic texture)
 
 ## Selected Mesh
 

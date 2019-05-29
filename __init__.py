@@ -20,9 +20,9 @@ bl_info = {
         "name": "Substance Painter",
         "description": "Substance Painter Tools",
         "author": "Digiography.Studio",
-        "version": (1, 5, 0),
+        "version": (1, 6, 5),
         "blender": (2, 80, 0),
-        "location": "Info Toolbar, File -> Import, File -> Export",
+        "location": "Info Toolbar, File -> Import, File -> Export, Menu",
         "wiki_url":    "https://github.com/Digiography/blender_addon_substance_painter/wiki",
         "tracker_url": "https://github.com/Digiography/blender_addon_substance_painter/issues",
         "category": "Import-Export",
@@ -54,7 +54,7 @@ class ds_sp_addon_prefs(bpy.types.AddonPreferences):
                 default=True,
         )     
         option_display_type : bpy.props.EnumProperty(
-                items=[('Buttons', "Buttons", "Buttons"),('Menu', "Menu", "Menu"),('Hide', "Hide", "Hide"),],
+                items=[('Buttons', "Buttons", "Use Buttons"),('Menu', "Menu", "Append a Menu to Main Menu"),('Hide', "Import/Export", "Use only Import/Export Menu's"),],
                 name="Display Type",
                 default='Buttons',
         )
@@ -69,7 +69,7 @@ class ds_sp_addon_prefs(bpy.types.AddonPreferences):
                 default='png',
         )
         option_show_sp_toggle : bpy.props.BoolProperty(
-                name="SP Toggle",
+                name="SP Buttons Toggle",
                 default=True,
         )
         option_show_sp_toggle_state : bpy.props.BoolProperty(
@@ -82,7 +82,7 @@ class ds_sp_addon_prefs(bpy.types.AddonPreferences):
                 default = True
         )  
         option_no_new : bpy.props.BoolProperty(
-                name="2018.0.1+ Project File Fix",
+                name="2018.0.1-2018.3.0 Project File Fix",
                 description="Exclude from path for SP 2018.0.1-2018.3.0 to avoid it being added to the textures path.",
                 default = False
         )                  
@@ -99,40 +99,134 @@ class ds_sp_addon_prefs(bpy.types.AddonPreferences):
                 box.prop(self, 'option_export_folder')
                 box.prop(self, 'option_textures_folder')
                 box.label(text='Automatically created as a sub folder relative to the saved .blend file. * Do NOT include any "\\".',icon='INFO')
+                box=layout.box()
+                box.prop(self, 'option_show_sp_toggle')
                 box.prop(self, 'option_relative')
                 box.prop(self, 'option_no_new')
                 box.prop(self, 'option_save_before_export')
 
-class ds_sp_prefs_open(bpy.types.Operator):
+class ds_sp_menu(bpy.types.Menu):
 
-    bl_idname = "ds_sp.prefs_open"
-    bl_label = "Open Preferences"
+    bl_label = " Substance Painter"
+    bl_idname = "ds_sp.menu"
+
+    def draw(self, context):
+
+        layout = self.layout
+
+        self.layout.operator(ds_sp.ds_sp_export_scene.bl_idname,icon="EXPORT")
+        self.layout.operator(ds_sp.ds_sp_pbr_nodes.bl_idname, text='Substance Painter (Scene)', icon="IMPORT").import_setting = 'scene'
+
+        self.layout.operator(ds_sp.ds_sp_export_sel.bl_idname,icon="EXPORT")
+        self.layout.operator(ds_sp.ds_sp_pbr_nodes.bl_idname, text='Substance Painter (Selected)', icon="IMPORT").import_setting = 'selected'
+
+def ds_sp_draw_menu(self, context):
+
+    self.layout.menu(ds_sp_menu.bl_idname)
+
+def ds_sp_menu_func_export_scene(self, context):
+
+    self.layout.operator(ds_sp.ds_sp_export_scene.bl_idname)
+
+def ds_sp_menu_func_export_sel(self, context):
+
+    self.layout.operator(ds_sp.ds_sp_export_sel.bl_idname)
+
+def ds_sp_menu_func_import_scene(self, context):
+
+    self.layout.operator(ds_sp.ds_sp_pbr_nodes.bl_idname, text='Substance Painter (Scene)').import_setting = 'scene'
+
+def ds_sp_menu_func_import_sel(self, context):
+
+    self.layout.operator(ds_sp.ds_sp_pbr_nodes.bl_idname, text='Substance Painter (Selected)').import_setting = 'selected'
+
+def ds_sp_draw_btns(self, context):
+    
+    if context.region.alignment != 'RIGHT':
+
+        layout = self.layout
+        row = layout.row(align=True)
+
+        if bpy.context.preferences.addons[__package__].preferences.option_show_sp_toggle:
+
+                if bpy.context.preferences.addons[__package__].preferences.option_show_sp_toggle_state:
+                        row.operator(ds_sp_toggle.bl_idname,text="SP",icon="TRIA_LEFT")
+                else:
+                        row.operator(ds_sp_toggle.bl_idname,text="SP",icon="TRIA_RIGHT")
+
+        if bpy.context.preferences.addons[__package__].preferences.option_show_sp_toggle_state or not bpy.context.preferences.addons[__package__].preferences.option_show_sp_toggle:
+
+                row.operator(ds_sp.ds_sp_export_scene.bl_idname,text="SP:Scene",icon="EXPORT")
+                row.operator(ds_sp.ds_sp_pbr_nodes.bl_idname, text='SP:Scene',icon="IMPORT").import_setting = 'scene'
+
+                row.operator(ds_sp.ds_sp_export_sel.bl_idname,text="SP:Sel",icon="EXPORT")
+                row.operator(ds_sp.ds_sp_pbr_nodes.bl_idname, text='SP:Sel', icon="IMPORT").import_setting = 'selected'
+
+class ds_sp_toggle(bpy.types.Operator):
+
+    bl_idname = "ds_sp.toggle"
+    bl_label = "SP"
     bl_space_type = 'PROPERTIES'
     bl_region_type = 'WINDOW'
- 
+    
     def execute(self, context):
-        
-        bpy.ops.screen.userpref_show('INVOKE_DEFAULT')
 
+        if not bpy.context.preferences.addons[__package__].preferences.option_show_sp_toggle_state:
+                bpy.context.preferences.addons[__package__].preferences.option_show_sp_toggle_state=True
+        else:
+                bpy.context.preferences.addons[__package__].preferences.option_show_sp_toggle_state=False
         return {'FINISHED'}
+
+classes = (
+    ds_sp_addon_prefs,
+    ds_sp_toggle,
+)
 
 def register():
 
         from bpy.utils import register_class
-
-        register_class(ds_sp_addon_prefs)
-        register_class(ds_sp_prefs_open)
+        for cls in classes:
+                register_class(cls)
 
         ds_sp.register()
 
-def unregister():
+        bpy.types.TOPBAR_MT_file_export.append(ds_sp_menu_func_export_scene)
+        bpy.types.TOPBAR_MT_file_import.append(ds_sp_menu_func_import_scene)
+        bpy.types.TOPBAR_MT_file_export.append(ds_sp_menu_func_export_sel)
+        bpy.types.TOPBAR_MT_file_import.append(ds_sp_menu_func_import_sel)
 
-        from bpy.utils import unregister_class
+        bpy.context.preferences.addons[__package__].preferences.option_show_sp_toggle_state=False
+
+        if bpy.context.preferences.addons[__package__].preferences.option_display_type=='Buttons':
+
+                bpy.types.TOPBAR_HT_upper_bar.append(ds_sp_draw_btns)
+
+        elif bpy.context.preferences.addons[__package__].preferences.option_display_type=='Menu':
+
+                register_class(ds_sp_menu)
+                bpy.types.TOPBAR_MT_editor_menus.append(ds_sp_draw_menu)
+
+def unregister():
 
         ds_sp.unregister()
 
-        unregister_class(ds_sp_addon_prefs)
-        unregister_class(ds_sp_prefs_open)
+        bpy.types.TOPBAR_MT_file_export.remove(ds_sp_menu_func_export_scene)
+        bpy.types.TOPBAR_MT_file_import.remove(ds_sp_menu_func_import_scene)
+        bpy.types.TOPBAR_MT_file_export.remove(ds_sp_menu_func_export_sel)
+        bpy.types.TOPBAR_MT_file_import.remove(ds_sp_menu_func_import_sel)
+
+        if bpy.context.preferences.addons[__package__].preferences.option_display_type=='Buttons':
+
+                bpy.types.TOPBAR_HT_upper_bar.remove(ds_sp_draw_btns)
+
+        elif bpy.context.preferences.addons[__package__].preferences.option_display_type=='Menu':
+
+                register_class(ds_sp_menu)
+                bpy.types.TOPBAR_MT_editor_menus.remove(ds_sp_draw_menu)
+
+        from bpy.utils import unregister_class
+        for cls in reversed(classes):
+                unregister_class(cls)
 
 if __name__ == "__main__":
 
