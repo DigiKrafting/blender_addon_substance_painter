@@ -44,7 +44,7 @@ Pipeline/Workflow import/export for Substance Painter.
 
 # Installation
 
-Download either the tar.gz or zip from [https://github.com/Digiography/blender_addon_substance_painter/releases/latest](https://github.com/Digiography/blender_addon_substance_painter/releases/latest)
+Download either the tar.gz or zip from [https://github.com/DigiKrafting/blender_addon_substance_painter/releases/latest](https://github.com/DigiKrafting/blender_addon_substance_painter/releases/latest)
 
 Installing an Addon in Blender
 
