@@ -58,7 +58,13 @@ def dks_sp_get_texture_file(texture_path,mesh_name,mat_name,texture_name,texture
             texture_path=bpy.path.relpath(texture_path)+sep
         return texture_path+mat_name+'_'+texture_name+'.'+texture_ext
     else:
-        return ""
+        _blend=dks_sp_get_file_name()
+        if path.exists(texture_path+_blend+'_'+mat_name+'_'+texture_name+'.'+texture_ext):
+            if bpy.context.preferences.addons[__package__].preferences.option_relative:
+                texture_path=bpy.path.relpath(texture_path)+sep
+            return texture_path+_blend+'_'+mat_name+'_'+texture_name+'.'+texture_ext
+        else:
+            return ""
 
 class dks_sp_pbr_nodes(bpy.types.Operator):
 
@@ -203,13 +209,14 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                             _material_links.new(node.outputs['Color'], node_mix.inputs['Color1'])
                             
                             node.image = bpy.data.images.load(_file_Base_Color)
+                            node.image.colorspace_settings.name = 'sRGB'
 
                             node_orm=_nodes.new('ShaderNodeTexImage')
                             node_orm.location = -500,-200
                             node_orm.name='dks_pbr_texture_orm'
 
                             node_orm.image = bpy.data.images.load(_file_ORM)
-                            node_orm.image.colorspace_settings.name = 'Linear'
+                            node_orm.image.colorspace_settings.name = 'Non-Color'
 
                             node_sep_rgb=_nodes.new('ShaderNodeSeparateRGB')
                             node_sep_rgb.location = -200,-200
@@ -242,6 +249,8 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                                 node.image = bpy.data.images.load(_file_Base_Color)
                             elif _file_Diffuse:
                                 node.image = bpy.data.images.load(_file_Diffuse)
+                            
+                            node.image.colorspace_settings.name = 'sRGB'
 
                             # Ambient Occlusion
                             
@@ -250,6 +259,7 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                             node.name='dks_pbr_texture_ao'
                             _material_links.new(node.outputs['Color'], node_mix.inputs['Color2'])
                             node.image = bpy.data.images.load(_file_Ambient_occlusion)
+                            node.image.colorspace_settings.name = 'Non-Color'
                         
                         else:
 
@@ -264,6 +274,8 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                                 node.image = bpy.data.images.load(_file_Base_Color)
                             elif _file_Diffuse:
                                 node.image = bpy.data.images.load(_file_Diffuse)
+                            
+                            node.image.colorspace_settings.name = 'sRGB'
 
                         # Metallic
 
@@ -274,7 +286,7 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                             node.name='dks_pbr_texture_metallic'
                             _material_links.new(node.outputs['Color'], node_shader.inputs['Metallic'])   
                             node.image = bpy.data.images.load(_file_Metallic)
-                            node.image.colorspace_settings.name = 'Linear'
+                            node.image.colorspace_settings.name = 'Non-Color'
 
                         # Specular
 
@@ -316,7 +328,7 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                                 node.name='dks_pbr_texture_roughness'
                                 _material_links.new(node.outputs['Color'], node_shader.inputs['Roughness'])   
                                 node.image = bpy.data.images.load(_file_Roughness)
-                                node.image.colorspace_settings.name = 'Linear'
+                                node.image.colorspace_settings.name = 'Non-Color'
 
                         # Normal
 
