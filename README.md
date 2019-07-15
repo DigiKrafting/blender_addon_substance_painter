@@ -54,7 +54,7 @@ Installing an Addon in Blender
 
 # Screenshots
 
-![alt](/screenshots/sp_2_8_0_rc_1.png.png)
+![alt](/screenshots/sp_2_8_0_rc_1.png)
 
 ![alt](/screenshots/sp_unreal.png)
 
