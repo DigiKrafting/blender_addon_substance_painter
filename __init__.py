@@ -20,7 +20,7 @@ bl_info = {
         "name": "DKS Substance Painter",
         "description": "Substance Painter Pipeline",
         "author": "DigiKrafting.Studio",
-        "version": (1, 7, 1),
+        "version": (1, 7, 2),
         "blender": (2, 80, 0),
         "location": "Info Toolbar, File -> Import, File -> Export, Menu",
         "wiki_url":    "https://github.com/DigiKrafting/blender_addon_substance_painter/wiki",
