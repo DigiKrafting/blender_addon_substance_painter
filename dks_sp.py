@@ -117,6 +117,7 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                     _file_Roughness = dks_sp_get_texture_file(_textures_path,_obj_name,_material_name,'Roughness',_texture_ext)
                     _file_ORM = dks_sp_get_texture_file(_textures_path,_obj_name,_material_name,'OcclusionRoughnessMetallic',_texture_ext)
 
+                    _file_Height = dks_sp_get_texture_file(_textures_path,_obj_name,_material_name,'Height',_texture_ext)
                     _file_Normal = dks_sp_get_texture_file(_textures_path,_obj_name,_material_name,'Normal_OpenGL',_texture_ext)
 
                     if _file_Normal=="":
@@ -148,7 +149,7 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                         _material_output = _nodes.new('ShaderNodeOutputMaterial')
 
                         if not _file_Emissive:
-                            _material_output.location = 600,0
+                            _material_output.location = 800,0
                         else:
                             _material_output.location = 1600,0
 
@@ -241,7 +242,7 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                             # Base Color
 
                             node=_nodes.new('ShaderNodeTexImage')
-                            node.location = 0,250
+                            node.location = -140,261
                             node.name='dks_pbr_texture_base_color'
                             _material_links.new(node.outputs['Color'], node_mix.inputs['Color1'])
                             
@@ -255,7 +256,7 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                             # Ambient Occlusion
                             
                             node=_nodes.new('ShaderNodeTexImage')
-                            node.location = 0,0
+                            node.location = -140,0
                             node.name='dks_pbr_texture_ao'
                             _material_links.new(node.outputs['Color'], node_mix.inputs['Color2'])
                             node.image = bpy.data.images.load(_file_Ambient_occlusion)
@@ -293,7 +294,7 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                         if _file_Specular:
 
                             node=_nodes.new('ShaderNodeTexImage')
-                            node.location = 0,-250
+                            node.location = -280,-180
                             node.name='dks_pbr_texture_Specular'
                             _material_links.new(node.outputs['Color'], node_shader.inputs['Specular'])   
                             node.image = bpy.data.images.load(_file_Specular)
@@ -303,7 +304,7 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                             # Roughness Invert
 
                             node_invert=_nodes.new('ShaderNodeInvert')
-                            node_invert.location = 200,-450
+                            node_invert.location = 100,-520
                             node_invert.name='dks_pbr_invert'
                             _material_links.new(node_invert.outputs['Color'], node_shader.inputs['Roughness'])
                             
@@ -312,7 +313,7 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                             if _file_Roughness!="":
 
                                 node=_nodes.new('ShaderNodeTexImage')
-                                node.location = 0,-500
+                                node.location = -280,-520
                                 node.name='dks_pbr_texture_roughness'
                                 _material_links.new(node.outputs['Color'], node_invert.inputs['Color'])   
                                 node.image = bpy.data.images.load(_file_Glossiness)
@@ -330,19 +331,52 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                                 node.image = bpy.data.images.load(_file_Roughness)
                                 node.image.colorspace_settings.name = 'Non-Color'
 
-                        # Normal
+                        # Height
+                        if _file_Height:
+    
+                            frame_1= _nodes.new('NodeFrame')
+                            frame_1.location = -390, -837
+                            frame_1.width = 802
+                            frame_1.height = 628
+                            frame_1.label = 'Normal and Height'
 
-                        node_map=_nodes.new('ShaderNodeNormalMap')
-                        node_map.location = 200,-700
-                        node_map.name='dks_pbr_normal_map'
-                        _material_links.new(node_map.outputs['Normal'], node_shader.inputs['Normal'])
-                        
-                        node=_nodes.new('ShaderNodeTexImage')
-                        node.location = -100,-750
-                        node.name='dks_pbr_texture_normal'
-                        _material_links.new(node.outputs['Color'], node_map.inputs['Color'])
-                        node.image = bpy.data.images.load(_file_Normal)
-                        node.image.colorspace_settings.name = 'Non-Color'
+                            node_Bump=_nodes.new('ShaderNodeBump')
+                            node_Bump.location = 250,-870
+                            node_Bump.name='dks_pbr_Bump'
+                            _material_links.new(node_Bump.outputs['Normal'], node_shader.inputs['Normal'])
+
+                            node_map=_nodes.new('ShaderNodeNormalMap')
+                            node_map.location = -20,-1150
+                            node_map.name='dks_pbr_normal_map'
+                            _material_links.new(node_map.outputs['Normal'], node_Bump.inputs['Normal'])
+                            
+                            node=_nodes.new('ShaderNodeTexImage')
+                            node.location = -360,-1180
+                            node.name='dks_pbr_texture_normal'
+                            _material_links.new(node.outputs['Color'], node_map.inputs['Color'])
+                            node.image = bpy.data.images.load(_file_Normal)
+                            node.image.colorspace_settings.name = 'Non-Color'
+
+                            node=_nodes.new('ShaderNodeTexImage')
+                            node.location = -360,-870
+                            node.name='dks_pbr_texture_Height'
+                            _material_links.new(node.outputs['Color'], node_Bump.inputs['Height'])
+                            node.image = bpy.data.images.load(_file_Height)
+                            node.image.colorspace_settings.name = 'Non-Color'
+                            
+                        else:
+                            # Normal
+                            node_map=_nodes.new('ShaderNodeNormalMap')
+                            node_map.location = 200,-700
+                            node_map.name='dks_pbr_normal_map'
+                            _material_links.new(node_map.outputs['Normal'], node_shader.inputs['Normal'])
+                            
+                            node=_nodes.new('ShaderNodeTexImage')
+                            node.location = -100,-750
+                            node.name='dks_pbr_texture_normal'
+                            _material_links.new(node.outputs['Color'], node_map.inputs['Color'])
+                            node.image = bpy.data.images.load(_file_Normal)
+                            node.image.colorspace_settings.name = 'Non-Color'
 
         return {'FINISHED'}
 
