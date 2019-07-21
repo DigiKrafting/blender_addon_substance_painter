@@ -332,7 +332,8 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                                 node.image.colorspace_settings.name = 'Non-Color'
 
                         # Height
-                        if _file_Height:
+
+                        if bpy.context.preferences.addons[__package__].preferences.option_use_height_maps and _file_Height:
     
                             frame_1= _nodes.new('NodeFrame')
                             frame_1.location = -390, -837
@@ -365,7 +366,9 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                             node.image.colorspace_settings.name = 'Non-Color'
                             
                         else:
+
                             # Normal
+
                             node_map=_nodes.new('ShaderNodeNormalMap')
                             node_map.location = 200,-700
                             node_map.name='dks_pbr_normal_map'

@@ -14,6 +14,7 @@ Pipeline/Workflow import/export for Substance Painter.
 - Autosave before export option.
 - Use Relative Paths option.
 - Creates nodes for Unreal Engine Textures. * (On detection of OcclusionRoughnessMetallic texture)
+- Optional Height Maps (Combines Height and Normal maps using the Bump Node, use with care, see screenshots below)
 
 ## Selected Mesh
 
@@ -64,4 +65,10 @@ Installing an Addon in Blender
 
 ![alt](/screenshots/sp_prefs.png)
 
+## Normal Map (* Eevee with Ambient Occlusion enabled)
 
+![alt](/screenshots/sp_Map_Normal.png)
+
+## Height Map combined with Normal Map (* Eevee with Ambient Occlusion enabled)
+
+![alt](/screenshots/sp_Map_Normal_Height.png)

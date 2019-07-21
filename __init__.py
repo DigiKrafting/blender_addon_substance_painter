@@ -20,7 +20,7 @@ bl_info = {
         "name": "DKS Substance Painter",
         "description": "Substance Painter Pipeline",
         "author": "DigiKrafting.Studio",
-        "version": (1, 7, 2),
+        "version": (1, 7, 5),
         "blender": (2, 80, 0),
         "location": "Info Toolbar, File -> Import, File -> Export, Menu",
         "wiki_url":    "https://github.com/DigiKrafting/blender_addon_substance_painter/wiki",
@@ -79,13 +79,18 @@ class dks_sp_addon_prefs(bpy.types.AddonPreferences):
         option_relative : bpy.props.BoolProperty(
                 name="Relative Paths",
                 description="Use Relative Paths for images.",
-                default = True
+                default=True
         )  
         option_no_new : bpy.props.BoolProperty(
                 name="2018.0.1-2018.3.0 Project File Fix",
                 description="Exclude from path for SP 2018.0.1-2018.3.0 to avoid it being added to the textures path.",
-                default = False
-        )                  
+                default=False
+        )  
+        option_use_height_maps : bpy.props.BoolProperty(
+                name="Use Height Maps",
+                description="Combines Height and Normal maps using the Bump Node.",
+                default=False,
+        )                        
         def draw(self, context):
 
                 layout = self.layout
@@ -104,6 +109,7 @@ class dks_sp_addon_prefs(bpy.types.AddonPreferences):
                 box.prop(self, 'option_relative')
                 box.prop(self, 'option_no_new')
                 box.prop(self, 'option_save_before_export')
+                box.prop(self, 'option_use_height_maps')
 
 class dks_sp_menu(bpy.types.Menu):
 
