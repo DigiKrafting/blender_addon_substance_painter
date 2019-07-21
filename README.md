@@ -65,6 +65,10 @@ Installing an Addon in Blender
 
 ![alt](/screenshots/sp_prefs.png)
 
+## Substance Painter Viewport
+
+![alt](/screenshots/sp_normals_sp.png)
+
 ## Normal Map (* Eevee with Ambient Occlusion enabled)
 
 ![alt](/screenshots/sp_Map_Normal.png)
