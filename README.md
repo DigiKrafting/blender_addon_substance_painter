@@ -57,13 +57,23 @@ Installing an Addon in Blender
 
 ![alt](/screenshots/sp_2_8_0_rc_1.png)
 
+## UE4 Nodes
+
 ![alt](/screenshots/sp_unreal.png)
+
+## Emissive
 
 ![alt](/screenshots/sp_emissive.png)
 
+## Nostalgia
+
 ![alt](/screenshots/sp.png)
 
+## Preferences
+
 ![alt](/screenshots/sp_prefs.png)
+
+# Normal / Normal + Height Comparision
 
 ## Substance Painter Viewport
 
