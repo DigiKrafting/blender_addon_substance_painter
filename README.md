@@ -57,6 +57,10 @@ Installing an Addon in Blender
 
 ![alt](/screenshots/sp_2_8_0_rc_1.png)
 
+## Opacity
+
+![alt](/screenshots/sp_opacity.png)
+
 ## UE4 Nodes
 
 ![alt](/screenshots/sp_unreal.png)

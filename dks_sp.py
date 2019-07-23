@@ -116,6 +116,7 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                     _file_Glossiness = dks_sp_get_texture_file(_textures_path,_obj_name,_material_name,'Glossiness',_texture_ext)
                     _file_Roughness = dks_sp_get_texture_file(_textures_path,_obj_name,_material_name,'Roughness',_texture_ext)
                     _file_ORM = dks_sp_get_texture_file(_textures_path,_obj_name,_material_name,'OcclusionRoughnessMetallic',_texture_ext)
+                    _file_Opacity = dks_sp_get_texture_file(_textures_path,_obj_name,_material_name,'Opacity',_texture_ext)
 
                     _file_Height = dks_sp_get_texture_file(_textures_path,_obj_name,_material_name,'Height',_texture_ext)
                     _file_Normal = dks_sp_get_texture_file(_textures_path,_obj_name,_material_name,'Normal_OpenGL',_texture_ext)
@@ -330,6 +331,19 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                                 _material_links.new(node.outputs['Color'], node_shader.inputs['Roughness'])   
                                 node.image = bpy.data.images.load(_file_Roughness)
                                 node.image.colorspace_settings.name = 'Non-Color'
+
+                        # Opacity
+
+                        if _file_Opacity:
+
+                            node=_nodes.new('ShaderNodeTexImage')
+                            node.location = 0,-600
+                            node.name='dks_pbr_texture_opacity'
+                            _material_links.new(node.outputs['Color'], node_shader.inputs['Alpha'])   
+                            node.image = bpy.data.images.load(_file_Opacity)
+                            node.image.colorspace_settings.name = 'Non-Color'
+                            
+                            _material.blend_method = 'CLIP'
 
                         # Height
 
