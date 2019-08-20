@@ -2,9 +2,9 @@
 
 Pipeline/Workflow import/export for Substance Painter.
 
-\* Updated to Blender 2.80.0 Beta
-
 # Features
+
+- Blender 2.80 (Linux/Windows)
 
 - Export in either FBX or OBJ.
 - Exports to export folder and opens Substance Painter.
@@ -18,8 +18,8 @@ Pipeline/Workflow import/export for Substance Painter.
 
 ## Selected Mesh
 
-- One Click Export 
-- One Click Textures Import 
+- One Click Export
+- One Click Textures Import
 
 ## Scene
 
@@ -30,12 +30,12 @@ Pipeline/Workflow import/export for Substance Painter.
 
 2.79.0 (1.4.0)
 
-\* Mesh Export will likely work in previous versions but untested. 
+\* Mesh Export will likely work in previous versions but untested.
 \* Texture Import requires the Principled BSDF shader in 2.79.0+.
 
 2.80.0 (1.5.0+)
 
-# IMPORTANT USAGE NOTES 
+# IMPORTANT USAGE NOTES
 
 \* Make sure you have a saved .blend file before using the auto import/export features, then saving before import/export is then not required. The addon needs the file location to know where to create the export and textures folder used for import/export of the files.
 
@@ -54,6 +54,8 @@ Installing an Addon in Blender
 - Click [Install Add-on from File..]
 
 # Screenshots
+
+![alt](/screenshots/sp_debian.png)
 
 ![alt](/screenshots/sp_2_8_0_rc_1.png)
 
