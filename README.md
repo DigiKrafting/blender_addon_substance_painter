@@ -4,7 +4,7 @@ Pipeline/Workflow import/export for Substance Painter.
 
 # Features
 
-- Blender 2.80 (Linux/Windows)
+- Blender 2.80 (Tested on Linux/Windows)
 
 - Export in either FBX or OBJ.
 - Exports to export folder and opens Substance Painter.
@@ -26,22 +26,15 @@ Pipeline/Workflow import/export for Substance Painter.
 - One Click Export
 - One Click Textures Import
 
-# Min Required Blender Version
-
-2.79.0 (1.4.0)
-
-\* Mesh Export will likely work in previous versions but untested.
-\* Texture Import requires the Principled BSDF shader in 2.79.0+.
-
-2.80.0 (1.5.0+)
-
 # IMPORTANT USAGE NOTES
 
-\* Make sure you have a saved .blend file before using the auto import/export features, then saving before import/export is then not required. The addon needs the file location to know where to create the export and textures folder used for import/export of the files.
+\* Make sure you have a **"saved"** .blend file before using the import/export features, then saving before import/export is then not required. The addon needs the file location to know where to create the export and textures folder used for import/export of the files.
 
 - File Naming Convention
 
     File names are derived from the selected object name or your blender file name.
+
+\* For Substance Painter 2018.1.0-2018.3.0 be sure to tick "2018.1.0-2018.3.0 Project File Fix" in the addon preferences. (See "Preferences" screenshot below)
 
 # Installation
 
@@ -49,9 +42,20 @@ Download either the tar.gz or zip from [https://github.com/DigiKrafting/blender_
 
 Installing an Addon in Blender
 
-- [File]->[User Preferences]
+- [Edit]->[Preferences]
 - Select [Add-ons] Tab
+- Click [Install]
+- Browse to download location of ZIP.
 - Click [Install Add-on from File..]
+
+# Min Required Blender Version
+
+2.79.0 (1.4.0)
+
+\* Mesh Export will likely work in previous versions but untested.
+\* Texture Import requires the Principled BSDF shader in 2.79.0+.
+
+2.80.0+ (1.5.0+)
 
 # Screenshots
 
