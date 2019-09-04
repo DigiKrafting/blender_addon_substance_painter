@@ -40,11 +40,11 @@ def dks_sp_get_textures_path():
     return _textures_path
 
 def dks_sp_get_object_name():
-       
+
     return bpy.context.active_object.name
 
 def dks_sp_get_file_name():
-       
+
     return bpy.path.basename(bpy.context.blend_data.filepath).replace('.blend','')
 
 def dks_sp_get_texture_file(texture_path,mesh_name,mat_name,texture_name,texture_ext):
@@ -59,7 +59,11 @@ def dks_sp_get_texture_file(texture_path,mesh_name,mat_name,texture_name,texture
         return texture_path+mat_name+'_'+texture_name+'.'+texture_ext
     else:
         _blend=dks_sp_get_file_name()
-        if path.exists(texture_path+_blend+'_'+mat_name+'_'+texture_name+'.'+texture_ext):
+        if path.exists(texture_path+_blend+'_'+mesh_name+'_'+texture_name+'.'+texture_ext):
+            if bpy.context.preferences.addons[__package__].preferences.option_relative:
+                texture_path=bpy.path.relpath(texture_path)+sep
+            return texture_path+_blend+'_'+mesh_name+'_'+texture_name+'.'+texture_ext
+        elif path.exists(texture_path+_blend+'_'+mat_name+'_'+texture_name+'.'+texture_ext):
             if bpy.context.preferences.addons[__package__].preferences.option_relative:
                 texture_path=bpy.path.relpath(texture_path)+sep
             return texture_path+_blend+'_'+mat_name+'_'+texture_name+'.'+texture_ext
@@ -87,9 +91,9 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
         elif bpy.context.active_object:
 
             _objects = {bpy.context.active_object}
-        
+
         _textures_path = dks_sp_get_textures_path()
-           
+
         _texture_ext=bpy.context.preferences.addons[__package__].preferences.option_import_ext
 
         for _obj in _objects:
@@ -102,8 +106,8 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
 
                 for _material in _materials:
 
-                    _material_name = _material.name            
-                    
+                    _material_name = _material.name
+
                     _file_Base_Color = dks_sp_get_texture_file(_textures_path,_obj_name,_material_name,'Base_Color',_texture_ext)
 
                     if _file_Base_Color=="":
@@ -127,9 +131,9 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                     _file_Emissive = dks_sp_get_texture_file(_textures_path,_obj_name,_material_name,'Emissive',_texture_ext)
 
                     if _file_Base_Color or _file_Diffuse:
-                        
+
                         if _material:
-                            
+
                             _material.use_nodes = True
 
                         # Clear Nodes
@@ -142,7 +146,7 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                                 _nodes.remove(node)
 
                         _material_links = _material.node_tree.links
-                        
+
                         _nodes = _material.node_tree.nodes
 
                         # Output Material
@@ -164,16 +168,16 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                             _node_add_shader.location = 1400,0
                             _node_add_shader.name = 'dks_pbr_add_shader'
                             _material_links.new(_node_add_shader.outputs['Shader'], _material_output.inputs['Surface'])
-                            
+
                             # Shader Emission
-                            
+
                             _node_emission=_nodes.new('ShaderNodeEmission')
                             _node_emission.location = 1200,-100
                             _node_emission.name = 'dks_pbr_emission'
                             _material_links.new(_node_emission.outputs['Emission'], _node_add_shader.inputs[1])
 
                             # Emissive
-                            
+
                             node=_nodes.new('ShaderNodeTexImage')
                             node.location = 800,-100
                             node.name='dks_pbr_texture_emissive'
@@ -190,9 +194,9 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                             _material_links.new(node_shader.outputs['BSDF'], _material_output.inputs['Surface'])
                         else:
                             _material_links.new(node_shader.outputs['BSDF'], _node_add_shader.inputs[0])
-                        
+
                         # UE4 - Occlusion, Roughness, Metallic
-                        
+
                         if _file_ORM:
 
                             # Mix RGB
@@ -209,7 +213,7 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                             node.location = -200,250
                             node.name='dks_pbr_texture_base_color'
                             _material_links.new(node.outputs['Color'], node_mix.inputs['Color1'])
-                            
+
                             node.image = bpy.data.images.load(_file_Base_Color)
                             node.image.colorspace_settings.name = 'sRGB'
 
@@ -225,11 +229,11 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                             node_sep_rgb.name='dks_pbr_texture_sep_rgb'
 
                             _material_links.new(node_orm.outputs['Color'], node_sep_rgb.inputs['Image'])
-                            
-                            _material_links.new(node_sep_rgb.outputs['R'], node_mix.inputs['Color2'])   
-                            _material_links.new(node_sep_rgb.outputs['G'], node_shader.inputs['Roughness'])   
-                            _material_links.new(node_sep_rgb.outputs['B'], node_shader.inputs['Metallic'])   
-                        
+
+                            _material_links.new(node_sep_rgb.outputs['R'], node_mix.inputs['Color2'])
+                            _material_links.new(node_sep_rgb.outputs['G'], node_shader.inputs['Roughness'])
+                            _material_links.new(node_sep_rgb.outputs['B'], node_shader.inputs['Metallic'])
+
                         elif _file_Ambient_occlusion:
 
                             # Mix RGB
@@ -246,23 +250,23 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                             node.location = -140,261
                             node.name='dks_pbr_texture_base_color'
                             _material_links.new(node.outputs['Color'], node_mix.inputs['Color1'])
-                            
+
                             if _file_Base_Color:
                                 node.image = bpy.data.images.load(_file_Base_Color)
                             elif _file_Diffuse:
                                 node.image = bpy.data.images.load(_file_Diffuse)
-                            
+
                             node.image.colorspace_settings.name = 'sRGB'
 
                             # Ambient Occlusion
-                            
+
                             node=_nodes.new('ShaderNodeTexImage')
                             node.location = -140,0
                             node.name='dks_pbr_texture_ao'
                             _material_links.new(node.outputs['Color'], node_mix.inputs['Color2'])
                             node.image = bpy.data.images.load(_file_Ambient_occlusion)
                             node.image.colorspace_settings.name = 'Non-Color'
-                        
+
                         else:
 
                             # Base Color
@@ -276,7 +280,7 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                                 node.image = bpy.data.images.load(_file_Base_Color)
                             elif _file_Diffuse:
                                 node.image = bpy.data.images.load(_file_Diffuse)
-                            
+
                             node.image.colorspace_settings.name = 'sRGB'
 
                         # Metallic
@@ -286,7 +290,7 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                             node=_nodes.new('ShaderNodeTexImage')
                             node.location = 0,-250
                             node.name='dks_pbr_texture_metallic'
-                            _material_links.new(node.outputs['Color'], node_shader.inputs['Metallic'])   
+                            _material_links.new(node.outputs['Color'], node_shader.inputs['Metallic'])
                             node.image = bpy.data.images.load(_file_Metallic)
                             node.image.colorspace_settings.name = 'Non-Color'
 
@@ -297,7 +301,7 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                             node=_nodes.new('ShaderNodeTexImage')
                             node.location = -280,-180
                             node.name='dks_pbr_texture_Specular'
-                            _material_links.new(node.outputs['Color'], node_shader.inputs['Specular'])   
+                            _material_links.new(node.outputs['Color'], node_shader.inputs['Specular'])
                             node.image = bpy.data.images.load(_file_Specular)
 
                         if _file_Glossiness:
@@ -308,7 +312,7 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                             node_invert.location = 100,-520
                             node_invert.name='dks_pbr_invert'
                             _material_links.new(node_invert.outputs['Color'], node_shader.inputs['Roughness'])
-                            
+
                             # Roughness
 
                             if _file_Roughness!="":
@@ -316,7 +320,7 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                                 node=_nodes.new('ShaderNodeTexImage')
                                 node.location = -280,-520
                                 node.name='dks_pbr_texture_roughness'
-                                _material_links.new(node.outputs['Color'], node_invert.inputs['Color'])   
+                                _material_links.new(node.outputs['Color'], node_invert.inputs['Color'])
                                 node.image = bpy.data.images.load(_file_Glossiness)
 
                         else:
@@ -328,7 +332,7 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                                 node=_nodes.new('ShaderNodeTexImage')
                                 node.location = 0,-500
                                 node.name='dks_pbr_texture_roughness'
-                                _material_links.new(node.outputs['Color'], node_shader.inputs['Roughness'])   
+                                _material_links.new(node.outputs['Color'], node_shader.inputs['Roughness'])
                                 node.image = bpy.data.images.load(_file_Roughness)
                                 node.image.colorspace_settings.name = 'Non-Color'
 
@@ -339,16 +343,16 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                             node=_nodes.new('ShaderNodeTexImage')
                             node.location = 0,-600
                             node.name='dks_pbr_texture_opacity'
-                            _material_links.new(node.outputs['Color'], node_shader.inputs['Alpha'])   
+                            _material_links.new(node.outputs['Color'], node_shader.inputs['Alpha'])
                             node.image = bpy.data.images.load(_file_Opacity)
                             node.image.colorspace_settings.name = 'Non-Color'
-                            
+
                             _material.blend_method = 'CLIP'
 
                         # Height
 
                         if bpy.context.preferences.addons[__package__].preferences.option_use_height_maps and _file_Height:
-    
+
                             frame_1= _nodes.new('NodeFrame')
                             frame_1.location = -390, -837
                             frame_1.width = 802
@@ -364,7 +368,7 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                             node_map.location = -20,-1150
                             node_map.name='dks_pbr_normal_map'
                             _material_links.new(node_map.outputs['Normal'], node_Bump.inputs['Normal'])
-                            
+
                             node=_nodes.new('ShaderNodeTexImage')
                             node.location = -360,-1180
                             node.name='dks_pbr_texture_normal'
@@ -378,7 +382,7 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                             _material_links.new(node.outputs['Color'], node_Bump.inputs['Height'])
                             node.image = bpy.data.images.load(_file_Height)
                             node.image.colorspace_settings.name = 'Non-Color'
-                            
+
                         else:
 
                             # Normal
@@ -387,7 +391,7 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
                             node_map.location = 200,-700
                             node_map.name='dks_pbr_normal_map'
                             _material_links.new(node_map.outputs['Normal'], node_shader.inputs['Normal'])
-                            
+
                             node=_nodes.new('ShaderNodeTexImage')
                             node.location = -100,-750
                             node.name='dks_pbr_texture_normal'
@@ -406,8 +410,8 @@ def dks_sp_fbx_export_sel(self, context):
     if bpy.context.preferences.addons[__package__].preferences.option_save_before_export:
         bpy.ops.wm.save_mainfile()
 
-    bpy.ops.export_scene.fbx(filepath=_export_file, use_selection=True, check_existing=False, axis_forward='-Z', axis_up='Y', filter_glob="*.fbx", ui_tab='MAIN', global_scale=1.0, apply_unit_scale=True, bake_space_transform=False, object_types={'ARMATURE', 'MESH'}, use_mesh_modifiers=True, mesh_smooth_type='OFF', use_mesh_edges=False, use_tspace=False, use_custom_props=False, add_leaf_bones=False, primary_bone_axis='Y', secondary_bone_axis='X', use_armature_deform_only=False, bake_anim=True, bake_anim_use_all_bones=True, bake_anim_use_nla_strips=True, bake_anim_use_all_actions=True, bake_anim_force_startend_keying=True, bake_anim_step=1.0, bake_anim_simplify_factor=1.0, path_mode='AUTO', embed_textures=False, batch_mode='OFF', use_batch_own_dir=True, use_metadata=True)
-    
+    bpy.ops.export_scene.fbx(filepath=_export_file, use_selection=True, check_existing=False, axis_forward='-Z', axis_up='Y', filter_glob="*.fbx", global_scale=1.0, apply_unit_scale=True, bake_space_transform=False, object_types={'ARMATURE', 'MESH'}, use_mesh_modifiers=True, mesh_smooth_type='OFF', use_mesh_edges=False, use_tspace=False, use_custom_props=False, add_leaf_bones=False, primary_bone_axis='Y', secondary_bone_axis='X', use_armature_deform_only=False, bake_anim=True, bake_anim_use_all_bones=True, bake_anim_use_nla_strips=True, bake_anim_use_all_actions=True, bake_anim_force_startend_keying=True, bake_anim_step=1.0, bake_anim_simplify_factor=1.0, path_mode='AUTO', embed_textures=False, batch_mode='OFF', use_batch_own_dir=True, use_metadata=True)
+
     return _export_file
 
 class dks_sp_fbx_export_sel_execute(bpy.types.Operator):
@@ -430,8 +434,8 @@ def dks_sp_fbx_export_scene(self, context):
     if bpy.context.preferences.addons[__package__].preferences.option_save_before_export:
         bpy.ops.wm.save_mainfile()
 
-    bpy.ops.export_scene.fbx(filepath=_export_file, use_selection=False, check_existing=False, axis_forward='-Z', axis_up='Y', filter_glob="*.fbx", ui_tab='MAIN', global_scale=1.0, apply_unit_scale=True, bake_space_transform=False, object_types={'ARMATURE', 'MESH'}, use_mesh_modifiers=True, mesh_smooth_type='OFF', use_mesh_edges=False, use_tspace=False, use_custom_props=False, add_leaf_bones=False, primary_bone_axis='Y', secondary_bone_axis='X', use_armature_deform_only=False, bake_anim=True, bake_anim_use_all_bones=True, bake_anim_use_nla_strips=True, bake_anim_use_all_actions=True, bake_anim_force_startend_keying=True, bake_anim_step=1.0, bake_anim_simplify_factor=1.0, path_mode='AUTO', embed_textures=False, batch_mode='OFF', use_batch_own_dir=True, use_metadata=True)
-    
+    bpy.ops.export_scene.fbx(filepath=_export_file, use_selection=False, check_existing=False, axis_forward='-Z', axis_up='Y', filter_glob="*.fbx", global_scale=1.0, apply_unit_scale=True, bake_space_transform=False, object_types={'ARMATURE', 'MESH'}, use_mesh_modifiers=True, mesh_smooth_type='OFF', use_mesh_edges=False, use_tspace=False, use_custom_props=False, add_leaf_bones=False, primary_bone_axis='Y', secondary_bone_axis='X', use_armature_deform_only=False, bake_anim=True, bake_anim_use_all_bones=True, bake_anim_use_nla_strips=True, bake_anim_use_all_actions=True, bake_anim_force_startend_keying=True, bake_anim_step=1.0, bake_anim_simplify_factor=1.0, path_mode='AUTO', embed_textures=False, batch_mode='OFF', use_batch_own_dir=True, use_metadata=True)
+
     return _export_file
 
 class dks_sp_fbx_export_scene_execute(bpy.types.Operator):
@@ -453,7 +457,7 @@ def dks_sp_obj_export_sel(self, context):
 
     if bpy.context.preferences.addons[__package__].preferences.option_save_before_export:
         bpy.ops.wm.save_mainfile()
-    
+
     bpy.ops.export_scene.obj(filepath=_export_file, check_existing=False, use_selection=True, axis_forward='-Z', axis_up='Y', global_scale=1.0, keep_vertex_order=True)
 
     return _export_file
@@ -477,7 +481,7 @@ def dks_sp_obj_export_scene(self, context):
 
     if not bpy.context.preferences.addons[__package__].preferences.option_save_before_export:
         bpy.ops.wm.save_mainfile()
-    
+
     bpy.ops.export_scene.obj(filepath=_export_file, check_existing=False, use_selection=False, axis_forward='-Z', axis_up='Y', global_scale=1.0, keep_vertex_order=True)
 
     return _export_file
@@ -495,7 +499,7 @@ class dks_sp_obj_export_scene_execute(bpy.types.Operator):
 
 class dks_sp_export_sel(bpy.types.Operator):
 
-    bl_idname = "dks_sp.export_sel" 
+    bl_idname = "dks_sp.export_sel"
     bl_label = "Substance Painter (Selected)"
     bl_description = "Export to Substance Painter (Selected)"
 
@@ -526,7 +530,7 @@ class dks_sp_export_sel(bpy.types.Operator):
 
 class dks_sp_export_scene(bpy.types.Operator):
 
-    bl_idname = "dks_sp.export_scene" 
+    bl_idname = "dks_sp.export_scene"
     bl_label = "Substance Painter (Scene)"
     bl_description = "Export to Substance Painter (Scene)"
 
@@ -550,7 +554,7 @@ class dks_sp_export_scene(bpy.types.Operator):
                 Popen([bpy.context.preferences.addons[__package__].preferences.option_sp_exe, "--disable-version-checking", "--mesh", _export_file, "--export-path", _textures_path, _export_project])
 
         else:
-            
+
             Popen([bpy.context.preferences.addons[__package__].preferences.option_sp_exe, "--disable-version-checking", "--mesh", _export_file, "--export-path", _textures_path, _export_project])
 
         return {'FINISHED'}

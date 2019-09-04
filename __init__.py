@@ -20,7 +20,7 @@ bl_info = {
         "name": "DKS Substance Painter",
         "description": "Substance Painter Pipeline",
         "author": "DigiKrafting.Studio",
-        "version": (1, 8, 0),
+        "version": (1, 8, 1),
         "blender": (2, 80, 0),
         "location": "Info Toolbar, File -> Import, File -> Export, Menu",
         "wiki_url":    "https://github.com/DigiKrafting/blender_addon_substance_painter/wiki",
@@ -35,7 +35,7 @@ from . import dks_sp
 class dks_sp_addon_prefs(bpy.types.AddonPreferences):
 
         bl_idname = __package__
- 
+
         option_sp_exe : bpy.props.StringProperty(
                 name="Substance Executable",
                 subtype='FILE_PATH',
@@ -44,15 +44,15 @@ class dks_sp_addon_prefs(bpy.types.AddonPreferences):
         option_export_folder : bpy.props.StringProperty(
                 name="Export Folder Name",
                 default="eXport",
-        )     
+        )
         option_textures_folder : bpy.props.StringProperty(
                 name="Textures Folder Name",
                 default="Textures",
-        )      
+        )
         option_save_before_export : bpy.props.BoolProperty(
                 name="Save Before Export",
                 default=True,
-        )     
+        )
         option_display_type : bpy.props.EnumProperty(
                 items=[('Buttons', "Buttons", "Use Buttons"),('Menu', "Menu", "Append a Menu to Main Menu"),('Hide', "Import/Export", "Use only Import/Export Menu's"),],
                 name="Display Type",
@@ -62,7 +62,7 @@ class dks_sp_addon_prefs(bpy.types.AddonPreferences):
                 items=[('obj', "obj", "obj"),('fbx', "fbx", "fbx"),],
                 name="Export Type",
                 default='fbx',
-        )    
+        )
         option_import_ext : bpy.props.EnumProperty(
                 items=[('png', "png", "png"),('jpeg', "jpeg", "jpeg"),('tiff', "tiff", "tiff"),],
                 name="Import Extension",
@@ -80,17 +80,17 @@ class dks_sp_addon_prefs(bpy.types.AddonPreferences):
                 name="Relative Paths",
                 description="Use Relative Paths for images.",
                 default=True
-        )  
+        )
         option_no_new : bpy.props.BoolProperty(
                 name="2018.0.1-2018.3.0 Project File Fix",
                 description="Exclude from path for SP 2018.0.1-2018.3.0 to avoid it being added to the textures path.",
                 default=False
-        )  
+        )
         option_use_height_maps : bpy.props.BoolProperty(
                 name="Use Height Maps",
                 description="Combines Height and Normal maps using the Bump Node.",
                 default=False,
-        )                        
+        )
         def draw(self, context):
 
                 layout = self.layout
@@ -147,7 +147,7 @@ def dks_sp_menu_func_import_sel(self, context):
     self.layout.operator(dks_sp.dks_sp_pbr_nodes.bl_idname, text='Substance Painter (Selected)').import_setting = 'selected'
 
 def dks_sp_draw_btns(self, context):
-    
+
     if context.region.alignment != 'RIGHT':
 
         layout = self.layout
@@ -174,7 +174,7 @@ class dks_sp_toggle(bpy.types.Operator):
     bl_label = "SP"
     bl_space_type = 'PROPERTIES'
     bl_region_type = 'WINDOW'
-    
+
     def execute(self, context):
 
         if not bpy.context.preferences.addons[__package__].preferences.option_show_sp_toggle_state:
