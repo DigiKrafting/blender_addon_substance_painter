@@ -401,6 +401,35 @@ class dks_sp_pbr_nodes(bpy.types.Operator):
 
         return {'FINISHED'}
 
+
+def dks_sp_create_material(mesh_obj):
+    
+    _material = bpy.data.materials.new(name="Material")
+
+    mesh_obj.data.materials.append(_material)
+
+    return True
+
+def dks_sp_check_material():
+
+    _obj = bpy.context.active_object
+
+    if _obj.type=='MESH':
+        if len(_obj.data.materials)==0:
+            _created = dks_sp_create_material(_obj)
+    
+    return True
+
+def dks_sp_check_materials():
+
+    for _obj in bpy.context.scene.objects:
+
+        if _obj.type=='MESH':
+            if len(_obj.data.materials)==0:
+                _created = dks_sp_create_material(_obj)
+    
+    return True
+
 def dks_sp_fbx_export_sel(self, context):
 
     _export_name = dks_sp_get_object_name()
@@ -479,7 +508,7 @@ def dks_sp_obj_export_scene(self, context):
     _export_path = dks_sp_get_export_path()
     _export_file = _export_path + _export_name + '.obj'
 
-    if not bpy.context.preferences.addons[__package__].preferences.option_save_before_export:
+    if bpy.context.preferences.addons[__package__].preferences.option_save_before_export:
         bpy.ops.wm.save_mainfile()
 
     bpy.ops.export_scene.obj(filepath=_export_file, check_existing=False, use_selection=False, axis_forward='-Z', axis_up='Y', global_scale=1.0, keep_vertex_order=True)
@@ -509,6 +538,9 @@ class dks_sp_export_sel(bpy.types.Operator):
         _export_path = bpy.path.abspath('//')
         _export_project = _export_path + _object_name + '.spp'
         _textures_path = dks_sp_get_textures_path()
+
+        if bpy.context.preferences.addons[__package__].preferences.option_create_materials:
+            _checked = dks_sp_check_material()
 
         if bpy.context.preferences.addons[__package__].preferences.option_export_type=='obj':
             _export_file = dks_sp_obj_export_sel(self, context)
@@ -541,6 +573,9 @@ class dks_sp_export_scene(bpy.types.Operator):
         _export_project = _export_path + _export_name + '.spp'
         _textures_path = dks_sp_get_textures_path()
 
+        if bpy.context.preferences.addons[__package__].preferences.option_create_materials:
+            _checked = dks_sp_check_materials()
+
         if bpy.context.preferences.addons[__package__].preferences.option_export_type=='obj':
             _export_file = dks_sp_obj_export_scene(self, context)
         elif bpy.context.preferences.addons[__package__].preferences.option_export_type=='fbx':
@@ -558,8 +593,6 @@ class dks_sp_export_scene(bpy.types.Operator):
             Popen([bpy.context.preferences.addons[__package__].preferences.option_sp_exe, "--disable-version-checking", "--mesh", _export_file, "--export-path", _textures_path, _export_project])
 
         return {'FINISHED'}
-
-
 
 classes = (
     dks_sp_fbx_export_sel_execute,

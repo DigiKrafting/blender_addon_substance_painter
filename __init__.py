@@ -20,7 +20,7 @@ bl_info = {
         "name": "DKS Substance Painter",
         "description": "Substance Painter Pipeline",
         "author": "DigiKrafting.Studio",
-        "version": (1, 8, 1),
+        "version": (1, 8, 2),
         "blender": (2, 80, 0),
         "location": "Info Toolbar, File -> Import, File -> Export, Menu",
         "wiki_url":    "https://github.com/DigiKrafting/blender_addon_substance_painter/wiki",
@@ -91,6 +91,11 @@ class dks_sp_addon_prefs(bpy.types.AddonPreferences):
                 description="Combines Height and Normal maps using the Bump Node.",
                 default=False,
         )
+        option_create_materials : bpy.props.BoolProperty(
+                name="Create Materials",
+                description="Create Material for Mesh if it does not have one.",
+                default=True,
+        )
         def draw(self, context):
 
                 layout = self.layout
@@ -100,16 +105,21 @@ class dks_sp_addon_prefs(bpy.types.AddonPreferences):
                 box.prop(self, 'option_sp_exe')
                 box.prop(self, 'option_export_type')
                 box.prop(self, 'option_import_ext')
+
                 box=layout.box()
                 box.prop(self, 'option_export_folder')
                 box.prop(self, 'option_textures_folder')
                 box.label(text='Automatically created as a sub folder relative to the saved .blend file. * Do NOT include any "\\".',icon='INFO')
+
                 box=layout.box()
                 box.prop(self, 'option_show_sp_toggle')
                 box.prop(self, 'option_relative')
-                box.prop(self, 'option_no_new')
                 box.prop(self, 'option_save_before_export')
+                box.prop(self, 'option_create_materials')                
                 box.prop(self, 'option_use_height_maps')
+
+                box=layout.box()
+                box.prop(self, 'option_no_new')
 
 class dks_sp_menu(bpy.types.Menu):
 
