@@ -15,6 +15,7 @@ Pipeline/Workflow import/export for Substance Painter.
 - Use Relative Paths option.
 - Creates nodes for Unreal Engine Textures. * (On detection of OcclusionRoughnessMetallic texture)
 - Optional Height Maps (Combines Height and Normal maps using the Bump Node, use with care, see screenshots below)
+- Checks if Mesh has material and will create one if it doesn't (Can be turned off in preferences "Create Material")
 
 ## Selected Mesh
 
