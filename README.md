@@ -4,11 +4,11 @@ Pipeline/Workflow import/export for Substance Painter.
 
 # Features
 
-- Blender 2.80 (Tested on Linux/Windows)
+- Blender 2.80+ (Tested on Linux/Windows)
 
 - Export in either FBX or OBJ.
 - Exports to export folder and opens Substance Painter.
-- Creates SPP Project File "{mesh}.spp" or "{filename}.spp". * (Excludes 2018.1.0-2018.3.0)
+- Creates SPP Project File "{filename}.spp" or "{mesh}.spp" or "{collection}.spp". * (Excludes 2018.1.0-2018.3.0 - See usage notes below)
 - Passes textures folder from preferences to Substance Painter.
 - Creates Nodes using the Principled BSDF shader.
 - Autosave before export option.
@@ -17,12 +17,17 @@ Pipeline/Workflow import/export for Substance Painter.
 - Optional Height Maps (Combines Height and Normal maps using the Bump Node, use with care, see screenshots below)
 - Checks if Mesh has material and will create one if it doesn't (Can be turned off in preferences "Create Material")
 
-## Selected Mesh
+## Scene
 
 - One Click Export
 - One Click Textures Import
 
-## Scene
+## Selected Mesh(s)
+
+- One Click Export
+- One Click Textures Import
+
+## Selected Collection
 
 - One Click Export
 - One Click Textures Import

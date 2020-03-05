@@ -20,7 +20,7 @@ bl_info = {
         "name": "DKS Substance Painter",
         "description": "Substance Painter Pipeline",
         "author": "DigiKrafting.Studio",
-        "version": (1, 8, 2),
+        "version": (1, 8, 5),
         "blender": (2, 80, 0),
         "location": "Info Toolbar, File -> Import, File -> Export, Menu",
         "wiki_url":    "https://github.com/DigiKrafting/blender_addon_substance_painter/wiki",
@@ -130,11 +130,14 @@ class dks_sp_menu(bpy.types.Menu):
 
         layout = self.layout
 
-        self.layout.operator(dks_sp.dks_sp_export_scene.bl_idname,icon="EXPORT")
-        self.layout.operator(dks_sp.dks_sp_pbr_nodes.bl_idname, text='Substance Painter (Scene)', icon="IMPORT").import_setting = 'scene'
+        layout.operator(dks_sp.dks_sp_export_scene.bl_idname,icon="EXPORT")
+        layout.operator(dks_sp.dks_sp_pbr_nodes.bl_idname, text='Substance Painter (Scene)', icon="IMPORT").import_setting = 'scene'
 
-        self.layout.operator(dks_sp.dks_sp_export_sel.bl_idname,icon="EXPORT")
-        self.layout.operator(dks_sp.dks_sp_pbr_nodes.bl_idname, text='Substance Painter (Selected)', icon="IMPORT").import_setting = 'selected'
+        layout.operator(dks_sp.dks_sp_export_sel.bl_idname,icon="EXPORT")
+        layout.operator(dks_sp.dks_sp_pbr_nodes.bl_idname, text='Substance Painter (Selected)', icon="IMPORT").import_setting = 'selected'
+
+        layout.operator(dks_sp.dks_sp_export_col.bl_idname,icon="EXPORT")
+        layout.operator(dks_sp.dks_sp_pbr_nodes.bl_idname, text='Substance Painter (Collection)', icon="IMPORT").import_setting = 'collection'
 
 def dks_sp_draw_menu(self, context):
 
@@ -147,6 +150,14 @@ def dks_sp_menu_func_export_scene(self, context):
 def dks_sp_menu_func_export_sel(self, context):
 
     self.layout.operator(dks_sp.dks_sp_export_sel.bl_idname)
+
+def dks_sp_menu_func_export_col(self, context):
+
+    self.layout.operator(dks_sp.dks_sp_export_col.bl_idname)
+
+def dks_sp_menu_func_import_col(self, context):
+
+    self.layout.operator(dks_sp.dks_sp_pbr_nodes.bl_idname, text='Substance Painter (Collection)').import_setting = 'collection'
 
 def dks_sp_menu_func_import_scene(self, context):
 
@@ -162,6 +173,7 @@ def dks_sp_draw_btns(self, context):
 
         layout = self.layout
         row = layout.row(align=True)
+        sp_lbl="SP:"
 
         if bpy.context.preferences.addons[__package__].preferences.option_show_sp_toggle:
 
@@ -169,14 +181,19 @@ def dks_sp_draw_btns(self, context):
                         row.operator(dks_sp_toggle.bl_idname,text="SP",icon="TRIA_LEFT")
                 else:
                         row.operator(dks_sp_toggle.bl_idname,text="SP",icon="TRIA_RIGHT")
+                
+                sp_lbl=""
 
         if bpy.context.preferences.addons[__package__].preferences.option_show_sp_toggle_state or not bpy.context.preferences.addons[__package__].preferences.option_show_sp_toggle:
 
-                row.operator(dks_sp.dks_sp_export_scene.bl_idname,text="SP:Scene",icon="EXPORT")
-                row.operator(dks_sp.dks_sp_pbr_nodes.bl_idname, text='SP:Scene',icon="IMPORT").import_setting = 'scene'
+                row.operator(dks_sp.dks_sp_export_scene.bl_idname,text=sp_lbl+"Scn",icon="EXPORT")
+                row.operator(dks_sp.dks_sp_pbr_nodes.bl_idname, text=sp_lbl+'Scn',icon="IMPORT").import_setting = 'scene'
 
-                row.operator(dks_sp.dks_sp_export_sel.bl_idname,text="SP:Sel",icon="EXPORT")
-                row.operator(dks_sp.dks_sp_pbr_nodes.bl_idname, text='SP:Sel', icon="IMPORT").import_setting = 'selected'
+                row.operator(dks_sp.dks_sp_export_sel.bl_idname,text=sp_lbl+"Sel",icon="EXPORT")
+                row.operator(dks_sp.dks_sp_pbr_nodes.bl_idname, text=sp_lbl+'Sel', icon="IMPORT").import_setting = 'selected'
+
+                row.operator(dks_sp.dks_sp_export_col.bl_idname,text=sp_lbl+"Col",icon="EXPORT")
+                row.operator(dks_sp.dks_sp_pbr_nodes.bl_idname, text=sp_lbl+'Col', icon="IMPORT").import_setting = 'collection'
 
 class dks_sp_toggle(bpy.types.Operator):
 
@@ -191,6 +208,7 @@ class dks_sp_toggle(bpy.types.Operator):
                 bpy.context.preferences.addons[__package__].preferences.option_show_sp_toggle_state=True
         else:
                 bpy.context.preferences.addons[__package__].preferences.option_show_sp_toggle_state=False
+
         return {'FINISHED'}
 
 classes = (
@@ -210,6 +228,8 @@ def register():
         bpy.types.TOPBAR_MT_file_import.append(dks_sp_menu_func_import_scene)
         bpy.types.TOPBAR_MT_file_export.append(dks_sp_menu_func_export_sel)
         bpy.types.TOPBAR_MT_file_import.append(dks_sp_menu_func_import_sel)
+        bpy.types.TOPBAR_MT_file_export.append(dks_sp_menu_func_export_col)
+        bpy.types.TOPBAR_MT_file_import.append(dks_sp_menu_func_import_col)
 
         bpy.context.preferences.addons[__package__].preferences.option_show_sp_toggle_state=False
 
@@ -230,6 +250,8 @@ def unregister():
         bpy.types.TOPBAR_MT_file_import.remove(dks_sp_menu_func_import_scene)
         bpy.types.TOPBAR_MT_file_export.remove(dks_sp_menu_func_export_sel)
         bpy.types.TOPBAR_MT_file_import.remove(dks_sp_menu_func_import_sel)
+        bpy.types.TOPBAR_MT_file_export.remove(dks_sp_menu_func_export_col)
+        bpy.types.TOPBAR_MT_file_import.remove(dks_sp_menu_func_import_col)
 
         if bpy.context.preferences.addons[__package__].preferences.option_display_type=='Buttons':
 
@@ -237,7 +259,7 @@ def unregister():
 
         elif bpy.context.preferences.addons[__package__].preferences.option_display_type=='Menu':
 
-                register_class(dks_sp_menu)
+                unregister_class(dks_sp_menu)
                 bpy.types.TOPBAR_MT_editor_menus.remove(dks_sp_draw_menu)
 
         from bpy.utils import unregister_class
