@@ -583,12 +583,16 @@ class dks_sp_export_col(bpy.types.Operator):
         _export_project = _export_path + _export_name + '.spp'
 
         for _obj in bpy.data.collections[_export_name].all_objects:
+
             if _obj.type=='MESH':
+
                 _obj.select_set(True)
 
-        if bpy.context.preferences.addons[__package__].preferences.option_create_materials:
-            _checked = dks_sp_check_material()
-        
+                if bpy.context.preferences.addons[__package__].preferences.option_create_materials:
+
+                    if len(_obj.data.materials)==0:
+                        _created = dks_sp_create_material(_obj)
+
         if bpy.context.preferences.addons[__package__].preferences.option_export_type=='obj':
             _export_file = dks_sp_obj_export_sel(self, context, _export_name)
         elif bpy.context.preferences.addons[__package__].preferences.option_export_type=='fbx':
