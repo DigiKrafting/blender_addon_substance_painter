@@ -555,9 +555,9 @@ class dks_sp_export_scene(bpy.types.Operator):
             _checked = dks_sp_check_materials()
 
         if bpy.context.preferences.addons[__package__].preferences.option_export_type=='obj':
-            _export_file = dks_sp_obj_export_sel(self, context)
+            _export_file = dks_sp_obj_export_scene(self, context)
         elif bpy.context.preferences.addons[__package__].preferences.option_export_type=='fbx':
-            _export_file = dks_sp_fbx_export_sel(self, context)
+            _export_file = dks_sp_fbx_export_scene(self, context)
 
         if self.open_sp:
 
